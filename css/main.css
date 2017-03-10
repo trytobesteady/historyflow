@@ -26,5 +26,27 @@ svg {
 }
 
 .marker-icon {
-	background-color: fuchsia;
+	background-color: lightgreen;
+  background-image: url(../img/Archaeological_site_icon.png);
+  background-size: 100% 100%;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.marker-label {
+  position: absolute;
+  display: inline-block;
+  left: 20px;
+  height: 20px;
+  background-color: #fff;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  padding-left: 5px;
+  padding-right: 5px;
+  transform: scaleX(0);
+  transform-origin: 0% 50%;
+  transition-duration: 500ms;
+}
+
+.marker-label.show {
+  transform: scaleX(1);
 }

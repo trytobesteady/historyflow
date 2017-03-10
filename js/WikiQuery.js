@@ -26,10 +26,10 @@ var WikiQuery = (function() {
   }
 
   function processData(data) {
-    
+
     var headVars = data.head.vars;
     var bindings = data.results.bindings;
-    
+
 
     for (var i = 0; i < headVars.length; i++) {
       title.innerHTML += headVars[i] + ', ';
@@ -40,7 +40,7 @@ var WikiQuery = (function() {
     for (var j = 0; j < bindings.length; j++) {
       var entry = {};
       var tempArray = [];
-      
+
       for (var k = 0; k < headVars.length; k++) {
         //converting founded date
         if (headVars[k] == 'founded') {
@@ -55,23 +55,21 @@ var WikiQuery = (function() {
           } else {
             convertedDate = parseInt(date[0], 10);
           }
-          
+
           entry[headVars[k]] = convertedDate;
           output.innerHTML += convertedDate + '<br>';
-          
+
         } else if (headVars[k] == 'coord') {
           var coordString = bindings[j][headVars[k]].value;
-          
+
           entry[headVars[k]] = [getFloatFromString(coordString)[1], getFloatFromString(coordString)[0]];
           output.innerHTML += getFloatFromString(coordString)[1] +','+ getFloatFromString(coordString)[0] + '<br>';
-          
+
         } else {
-          
+
           entry[headVars[k]] = bindings[j][headVars[k]].value;
           output.innerHTML += bindings[j][headVars[k]].value + '<br>';
         }
-        
-        
       }
       output.innerHTML += '<br>';
       queryArray.push(entry);
@@ -79,13 +77,13 @@ var WikiQuery = (function() {
 
     processArray(queryArray);
   }
-  
+
   function processArray(array) {
     for (var i = 0; i < array.length; i++) {
       MarkerOverlay.createMarker(array[i]);
     }
   }
-  
+
   function getFloatFromString(string) {
     var regex = /[+-]?\d+(\.\d+)?/g;
     var floats = string.match(regex).map(function(v) { return parseFloat(v); });
