@@ -1,0 +1,30 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+	font-family: Sans-Serif;
+}
+#map {
+  height: 100%;
+  width: 100%;
+}
+
+svg {
+  -webkit-filter: blur(0px);
+  filter: blur(0px);
+}
+
+.debug-output {
+	position: absolute;
+	opacity: 0.3;
+	right: 0;
+	background-color: rgba(255, 255, 255, 0.5);
+	z-index: 401;
+	padding: 10px;
+	display: none;
+}
+
+.marker-icon {
+	background-color: fuchsia;
+}
