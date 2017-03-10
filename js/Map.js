@@ -4,7 +4,7 @@ var MapTool = (function() {
   exports.init = function() {
     console.log('init map')
 
-    exports.map = L.map('map').setView([48, 16], 2);
+    exports.map = L.map('map').setView([48, 16], 3);
     //map.createPane('labels');
     exports.map.getRenderer(exports.map).options.padding = 100;
 

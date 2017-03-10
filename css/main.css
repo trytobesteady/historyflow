@@ -5,9 +5,13 @@ html, body {
   width: 100%;
 	font-family: Sans-Serif;
 }
+
 #map {
-  height: 100%;
-  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 30px;
+  left: 0;
+  right: 0;
 }
 
 svg {
@@ -30,6 +34,8 @@ svg {
   background-image: url(../img/Archaeological_site_icon.png);
   background-size: 100% 100%;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition-duration: 300ms;
 }
 
 .marker-label {

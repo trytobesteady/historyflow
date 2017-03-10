@@ -26,15 +26,8 @@ var WikiQuery = (function() {
   }
 
   function processData(data) {
-
     var headVars = data.head.vars;
     var bindings = data.results.bindings;
-
-
-    for (var i = 0; i < headVars.length; i++) {
-      title.innerHTML += headVars[i] + ', ';
-      //entry[headVars[i]] = null;
-    }
 
     //bindings.length
     for (var j = 0; j < bindings.length; j++) {
@@ -55,20 +48,12 @@ var WikiQuery = (function() {
           } else {
             convertedDate = parseInt(date[0], 10);
           }
-
           entry[headVars[k]] = convertedDate;
-          output.innerHTML += convertedDate + '<br>';
-
         } else if (headVars[k] == 'coord') {
           var coordString = bindings[j][headVars[k]].value;
-
           entry[headVars[k]] = [getFloatFromString(coordString)[1], getFloatFromString(coordString)[0]];
-          output.innerHTML += getFloatFromString(coordString)[1] +','+ getFloatFromString(coordString)[0] + '<br>';
-
         } else {
-
           entry[headVars[k]] = bindings[j][headVars[k]].value;
-          output.innerHTML += bindings[j][headVars[k]].value + '<br>';
         }
       }
       output.innerHTML += '<br>';
@@ -82,6 +67,8 @@ var WikiQuery = (function() {
     for (var i = 0; i < array.length; i++) {
       MarkerOverlay.createMarker(array[i]);
     }
+    var allMarkerLabels = document.querySelectorAll('[data-year]');
+    Timeline.relayMarkers(allMarkerLabels);
   }
 
   function getFloatFromString(string) {

@@ -5,15 +5,6 @@ var MarkerOverlay = (function() {
 
   exports.init = function() {
     //markerGroup = new L.LayerGroup(),
-
-  }
-
-  exports.hideAllMarkers = function() {
-    //MapTool.map.removeLayer(markerGroup);
-  }
-
-  exports.showAllMarkers = function() {
-    //MapTool.map.addLayer(markerGroup);
   }
 
   exports.createMarker = function(markerData) {
@@ -26,23 +17,18 @@ var MarkerOverlay = (function() {
       className: 'marker-icon',
       iconSize: [20, 20],
       position: latlng,
-      html: '<div class="marker-label">'+label+'</div>'
+      html: '<div data-year="'+year+'" class="marker-label">'+label+'</div>'
     });
 
     var newMarker = L.marker(latlng, {
       icon: icon
     }).addTo(MapTool.map).on('click', onMarkerClick);
-
-    //var newMarker = new L.marker(e.latlng).addTo(map);
-
-    //var markerOverlay = {'markerGroup':markerGroup};
-    //L.control.layers(markerOverlay).addTo(MapTool.map);
-    //MapTool.map.addLayer(markerGroup);
   }
 
   function onMarkerClick(e) {
     var targetName = e.target.options.icon.options;
-    //console.log('onMarkerClick',targetName);
+
+    //get label by click
     var currentLabel = e.originalEvent.target.getElementsByClassName('marker-label')[0];
 
     if(currentLabel.classList.contains('show')) {
@@ -51,7 +37,7 @@ var MarkerOverlay = (function() {
       currentLabel.classList.add('show');
     }
 
-    console.log(e.originalEvent.target);
+    console.log(targetName);
 
   }
 
