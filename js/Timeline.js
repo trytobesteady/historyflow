@@ -25,14 +25,14 @@ var Timeline = (function() {
     if(allMarkerLabels) {
       for (var i = 0; i < allMarkerLabels.length; i++) {
         var labelYear = parseInt(allMarkerLabels[i].getAttribute('data-year'));
-        var currentMarker = allMarkerLabels[i].parentElement;
+        var currentMarker = allMarkerLabels[i].parentElement.parentElement;
 
         if(currentYear >= labelYear) {
-          currentMarker.style.opacity = 1;
-          //TweenMax.to(currentMarker, 0.3, {css:{autoAlpha:1}});
+          //currentMarker.style.opacity = 1;
+          TweenMax.to(currentMarker, 0.3, {css:{autoAlpha:1}});
         } else if (currentYear < labelYear) {
-          //TweenMax.to(currentMarker, 0.3, {css:{autoAlpha:0}});
-          currentMarker.style.opacity = 0;
+          TweenMax.to(currentMarker, 0.3, {css:{autoAlpha:0}});
+          //currentMarker.style.opacity = 0;
         }
       }
     }

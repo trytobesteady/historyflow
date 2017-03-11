@@ -1,6 +1,6 @@
 var Queries = (function() {
     var exports = {};
-    
+
     exports.universities = `
     SELECT ?universityLabel ?universityDescription ?website ?coord
     WHERE {
@@ -15,7 +15,7 @@ var Queries = (function() {
     	}
     }
     `;
-    
+
     exports.archsites = `
     SELECT ?label ?coord ?founded
     WHERE
@@ -26,7 +26,7 @@ var Queries = (function() {
        ?subj rdfs:label ?label filter (lang(?label) = "en")
     }
     `;
-    
+
     exports.test = `
     SELECT ?label ?coord ?place
     WHERE
@@ -36,7 +36,7 @@ var Queries = (function() {
        ?subj rdfs:label ?label filter (lang(?label) = "en")
     }
     `;
-    
-    
+
+
     return exports;
 })();

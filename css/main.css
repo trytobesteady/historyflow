@@ -35,7 +35,7 @@ svg {
   background-size: 100% 100%;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
   opacity: 0;
-  transition-duration: 300ms;
+  /*transition-duration: 300ms;*/
 }
 
 .marker-label {
