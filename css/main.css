@@ -30,18 +30,34 @@ svg {
 }
 
 .marker-icon {
-	background-color: lightgreen;
-  background-image: url(../img/Archaeological_site_icon.png);
   background-size: 100% 100%;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
   opacity: 0;
-  /*transition-duration: 300ms;*/
+  background-size: 60% 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 20px;
+}
+
+.marker-icon.archsites {
+  background-image: url(../img/archsite256.png);
+  background-color: rgba(152, 115, 37, 1);
+}
+
+.marker-icon.settlements {
+  background-image: url(../img/house256.png);
+  background-color: rgba(144, 238, 144, 1);
+}
+
+.marker-icon.battles {
+  background-image: url(../img/battle256.png);
+  background-color: rgba(140, 4, 4, 1);
 }
 
 .marker-label {
   position: absolute;
   display: inline-block;
-  left: 20px;
+  left: 24px;
   height: 20px;
   background-color: #fff;
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);

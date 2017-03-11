@@ -1,36 +1,62 @@
 //this renders all green bubble markers
 var MarkerOverlay = (function() {
   var exports = {};
-  var markerGroup = null;
+  exports.markerClusters;
+  exports.markerArray = [];
+
 
   exports.init = function() {
-    //markerGroup = new L.LayerGroup(),
+    exports.markerClusters = L.markerClusterGroup( {animateAddingMarkers: true} );
   }
 
   exports.createMarker = function(markerData) {
     var latlng = markerData.coord;
     var label = markerData.label;
     var year = markerData.founded;
-    var labelString = label.replace(/ /g,'_')
+    var iconClass = markerData.icon;
 
+    if(!latlng) {
+      console.log(label, latlng);
+      return;
+    }
+
+    var labelString = label.replace(/ /g,'_')
     var yearString = '';
+
     if(year < 0) {
       yearString = Math.abs(year) + ' BC';
     } else if (year > 0) {
       yearString = year + ' AD';
     }
 
+    //TODO check if target page exists in its language
+    var url = 'https://en.wikipedia.org/wiki/Nuff'
+    var xhr = new XMLHttpRequest();
+    xhr.open("HEAD", url,true);
+    xhr.onreadystatechange=function() {
+       console.log("HTTP Status Code:"+xhr.status);
+    }
+    //xhr.send(null);
+
     var icon = L.divIcon({
       iconAnchor: [10, 10],
-      className: 'marker-icon',
+      className: 'marker-icon '+iconClass,
       iconSize: [20, 20],
       position: latlng,
-      html: '<a target="_blank" href="https://de.wikipedia.org/wiki/'+labelString+'"><div data-year="'+year+'" class="marker-label">'+label+' / '+yearString+'</div></a>'
+      year: year,
+      html: '<a target="_blank" href="https://en.wikipedia.org/wiki/'+labelString+'"><div data-year="'+year+'" class="marker-label">'+label+' / '+yearString+'</div></a>'
     });
 
     var newMarker = L.marker(latlng, {
       icon: icon
-    }).addTo(MapTool.map).on('click', onMarkerClick);
+    }).addTo(MapTool.map).on('click', onMarkerClick); //
+
+    /*
+    //CLUSTER
+    exports.markerArray.push(newMarker);
+    exports.markerClusters.addLayer(newMarker);
+    MapTool.map.addLayer(exports.markerClusters);
+    */
   }
 
   function onMarkerClick(e) {
@@ -46,7 +72,7 @@ var MarkerOverlay = (function() {
         currentLabel.classList.add('show');
       }
     }
-    //console.log(targetName);
+    console.log(targetName);
   }
 
   return exports;

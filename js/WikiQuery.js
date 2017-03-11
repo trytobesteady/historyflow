@@ -7,12 +7,14 @@ var WikiQuery = (function() {
     title = document.getElementById('title');
     output = document.getElementById('output');
 
-    //startSparqlQuery(Queries.universities);
-    startSparqlQuery(Queries.archsites);
+
+    //startSparqlQuery(Queries.battles, 'battles', true);
+    startSparqlQuery(Queries.archsites, 'archsites', false);
+    startSparqlQuery(Queries.settlements, 'settlements', true);
   };
 
 
-  function startSparqlQuery(sparql) {
+  function startSparqlQuery(sparql, iconIdentifier, startRendering) {
     var url = wdk.sparqlQuery(sparql)
 
     getJSON(url,
@@ -20,23 +22,26 @@ var WikiQuery = (function() {
         if (err != null) {
           console.log('Something went wrong: ' + err);
         } else {
-          processData(data);
+          processData(data, iconIdentifier, startRendering);
         }
       });
   }
 
-  function processData(data) {
+  function processData(data, iconIdentifier, startRendering) {
     var headVars = data.head.vars;
     var bindings = data.results.bindings;
 
     //bindings.length
     for (var j = 0; j < bindings.length; j++) {
+      //looping through all query entries
       var entry = {};
       var tempArray = [];
 
       for (var k = 0; k < headVars.length; k++) {
-        //converting founded date
+        //looping through keys in object
+
         if (headVars[k] == 'founded') {
+          //converting founded date
           var literalTime = bindings[j][headVars[k]].value;
           literalTime = literalTime.split('T');
           var date = literalTime[0].split('-')
@@ -50,17 +55,27 @@ var WikiQuery = (function() {
           }
           entry[headVars[k]] = convertedDate;
         } else if (headVars[k] == 'coord') {
+          //adding geocoordinate
           var coordString = bindings[j][headVars[k]].value;
-          entry[headVars[k]] = [getFloatFromString(coordString)[1], getFloatFromString(coordString)[0]];
+          var lat = getFloatFromString(coordString)[1];
+          var lng = getFloatFromString(coordString)[0];
+          if(lat && lng) {
+            entry[headVars[k]] = [lat, lng];
+          }
+
         } else {
+          //adding label and iconIdentifier
           entry[headVars[k]] = bindings[j][headVars[k]].value;
+          entry.icon = iconIdentifier;
         }
       }
       output.innerHTML += '<br>';
       queryArray.push(entry);
     }
 
-    processArray(queryArray);
+    if(startRendering) {
+      processArray(queryArray);
+    }
   }
 
   function processArray(array) {
@@ -68,7 +83,7 @@ var WikiQuery = (function() {
       MarkerOverlay.createMarker(array[i]);
     }
     var allMarkerLabels = document.querySelectorAll('[data-year]');
-    Timeline.relayMarkers(allMarkerLabels);
+    Timeline.relayMarkers();
   }
 
   function getFloatFromString(string) {
