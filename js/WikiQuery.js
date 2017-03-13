@@ -2,6 +2,8 @@ var WikiQuery = (function() {
   var exports = {};
   var title;
   var queryArray = [];
+  
+  var currentQueries = ['settlements'];
   var currentQueries = ['archsites', 'settlements', 'battles'];
   var currentQueryIndex = 0;
 

@@ -58,26 +58,15 @@ var GoogleMarkerOverlay = (function() {
     exports.markerGroups[iconType].push(marker);
     exports.allMarkers.push(marker);
     
-    var html = "<b>" + label + "</b> <br/>" + yearString;
+    var html = '<a class="marker-link" target="_blank" href="https://en.wikipedia.org/wiki/'+labelString+'"><b>'+label+' / '+yearString+'</b></a>';
     bindInfoWindow(marker, GoogleMapTool.map, exports.infoWindow, html);
   }
   
   function bindInfoWindow(marker, map, infoWindow, html) {
     google.maps.event.addListener(marker, 'click', function () {
       exports.infoWindow.setContent(html);
-      exports.infoWindow.open(GoogleMapTool, marker);
+      exports.infoWindow.open(GoogleMapTool.map, marker);
     });
-  }
-  
-  function toggleGroup(type) {
-    for (var i = 0; i < markerGroups[type].length; i++) {
-      var marker = markerGroups[type][i];
-      if (!marker.getVisible()) {
-          marker.setVisible(true);
-      } else {
-          marker.setVisible(false);
-      }
-    }
   }
 
   return exports;

@@ -17,17 +17,17 @@
 
     <script src="js/Timeline.js"></script>
     <script src="js/Queries.js"></script>
+    <script src="js/WikiQuery.js"></script>
     <script src="js/GoogleMap.js"></script>
     <script src="js/GoogleMarkerOverlay.js"></script>
+    <script src="js/Filter.js"></script>
     <!--<script src="js/Map.js"></script>
     <script src="js/MarkerOverlay.js"></script>-->
-    <script src="js/WikiQuery.js"></script>
+    
 
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYQvAlWRYZRWJfzzvEyyHpoudv4zrU1x4&callback=initMap">
     </script>
-
-    
 
     <div class="debug-output">
       <h2 id="title"></h2>
@@ -35,6 +35,25 @@
     </div>
 
     <div id="map"></div>
+    
+    <div class="filter-wrapper">
+      
+      <input id="checkbox_archsites" class="filter-checkbox" checked="checked" type="checkbox">
+      <label for="checkbox_archsites">
+        <img src="img/archsite24.png" alt="">Archaeological Sites
+      </label>
+      
+      <input id="checkbox_settlements" class="filter-checkbox" checked="checked" type="checkbox">
+      <label for="checkbox_settlements">
+        <img src="img/house24.png" alt="">Settlements
+      </label>
+      
+      <input id="checkbox_battles" class="filter-checkbox" checked="checked" type="checkbox">
+      <label for="checkbox_battles">
+        <img src="img/battle24.png" alt="">Battles
+      </label>
+      
+    </div>
 
     <div id="main-slider" class="dragdealer">
       <div class="handle main-bar">
@@ -49,6 +68,7 @@
       GoogleMapTool.init();
       WikiQuery.init();
       Timeline.init();
+      Filter.init();
       //MarkerOverlay.init();
       //MapTool.init();
       

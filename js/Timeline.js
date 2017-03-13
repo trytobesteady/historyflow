@@ -1,8 +1,8 @@
 var Timeline = (function() {
   var exports = {};
+  exports.currentYear = 0;
   var yearValue, allMarkerLabels;
   var timeline;
-  var currentYear = 0;
   var colors = {archsites:'#6d4000', cities:'#1c6d00', battles:'#8c0404'}
 
   exports.init = function() {
@@ -22,29 +22,28 @@ var Timeline = (function() {
   }
 
   function onTimelineDrag(x) {
-    currentYear = Math.round(x * 14000) - 12000;
+    exports.currentYear = Math.round(x * 14000) - 12000;
 
     if(allMarkerLabels) {
       for (var i = 0; i < allMarkerLabels.length; i++) {
         var currentMarker = allMarkerLabels[i];
         var labelYear = currentMarker.year;
 
-        if(currentYear >= labelYear) {
+        if(exports.currentYear >= labelYear) {
           currentMarker.setVisible(true);
-        } else if (currentYear < labelYear) {
+        } else if (exports.currentYear < labelYear) {
           currentMarker.setVisible(false);
-          
-          if(exports.infoWindow) {
-            exports.infoWindow.close();  
+          if(GoogleMarkerOverlay.infoWindow) {
+            GoogleMarkerOverlay.infoWindow.close();  
           }
         }
       }
     }
 
-    if(currentYear < 0) {
-      yearValue.innerHTML = Math.abs(currentYear) + ' BC';
-    } else if (currentYear > 0) {
-      yearValue.innerHTML = currentYear + ' AD';
+    if(exports.currentYear < 0) {
+      yearValue.innerHTML = Math.abs(exports.currentYear) + ' BC';
+    } else if (exports.currentYear > 0) {
+      yearValue.innerHTML = exports.currentYear + ' AD';
     } else {
       yearValue.innerHTML = '<a target="_blank" href="https://en.wikipedia.org/wiki/Year_zero"> 0 </>';
     }
