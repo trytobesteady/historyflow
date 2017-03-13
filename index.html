@@ -17,11 +17,17 @@
 
     <script src="js/Timeline.js"></script>
     <script src="js/Queries.js"></script>
-    <script src="js/Map.js"></script>
-    <script src="js/MarkerOverlay.js"></script>
+    <script src="js/GoogleMap.js"></script>
+    <script src="js/GoogleMarkerOverlay.js"></script>
+    <!--<script src="js/Map.js"></script>
+    <script src="js/MarkerOverlay.js"></script>-->
     <script src="js/WikiQuery.js"></script>
 
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYQvAlWRYZRWJfzzvEyyHpoudv4zrU1x4&callback=initMap">
+    </script>
 
+    
 
     <div class="debug-output">
       <h2 id="title"></h2>
@@ -37,15 +43,18 @@
     </div>
 
     <script>
-    document.onreadystatechange = function () {
-      var state = document.readyState;
-      if (state == 'interactive') {
-        WikiQuery.init();
-        MarkerOverlay.init();
-        MapTool.init();
-        Timeline.init();
-      }
+    
+    
+    function initMap() {
+      GoogleMapTool.init();
+      WikiQuery.init();
+      Timeline.init();
+      //MarkerOverlay.init();
+      //MapTool.init();
+      
     }
+    
+
     </script>
 </body>
 

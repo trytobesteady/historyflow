@@ -18,9 +18,7 @@ var Timeline = (function() {
   };
 
   exports.relayMarkers = function() {
-    //CLUSTER
-    //allMarkerLabels = MarkerOverlay.markerArray;
-    allMarkerLabels = document.querySelectorAll('[data-year]');
+    allMarkerLabels = GoogleMarkerOverlay.allMarkers;
   }
 
   function onTimelineDrag(x) {
@@ -28,23 +26,19 @@ var Timeline = (function() {
 
     if(allMarkerLabels) {
       for (var i = 0; i < allMarkerLabels.length; i++) {
-        var labelYear = parseInt(allMarkerLabels[i].getAttribute('data-year'));
-        var currentMarker = allMarkerLabels[i].parentElement.parentElement;
-
-        ////CLUSTER
-        //var labelYear = parseInt(allMarkerLabels[i].options.icon.options.year);
-        //var currentMarker = allMarkerLabels[i];
-
+        var currentMarker = allMarkerLabels[i];
+        var labelYear = currentMarker.year;
 
         if(currentYear >= labelYear) {
-          TweenMax.to(currentMarker, 0.3, {css:{autoAlpha:1}});
-          //MarkerOverlay.markerClusters.addLayer(currentMarker);
+          currentMarker.setVisible(true);
         } else if (currentYear < labelYear) {
-          TweenMax.to(currentMarker, 0.3, {css:{autoAlpha:0}});
-          //MarkerOverlay.markerClusters.removeLayer(currentMarker);
+          currentMarker.setVisible(false);
+          
+          if(exports.infoWindow) {
+            exports.infoWindow.close();  
+          }
         }
       }
-      //MarkerOverlay.markerClusters.refreshClusters();
     }
 
     if(currentYear < 0) {

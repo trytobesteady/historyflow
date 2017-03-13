@@ -1,33 +1,44 @@
 var WikiQuery = (function() {
   var exports = {};
-  var output, title;
+  var title;
   var queryArray = [];
+  var currentQueries = ['archsites', 'settlements', 'battles'];
+  var currentQueryIndex = 0;
 
   exports.init = function(data) {
     title = document.getElementById('title');
-    output = document.getElementById('output');
 
-
-    //startSparqlQuery(Queries.battles, 'battles', true);
-    startSparqlQuery(Queries.archsites, 'archsites', false);
-    startSparqlQuery(Queries.settlements, 'settlements', true);
+    for (var i = 0; i < currentQueries.length; i++) {
+      currentQueries[i]
+    }
+    
+    startSparqlQuery();
   };
 
 
-  function startSparqlQuery(sparql, iconIdentifier, startRendering) {
+  function startSparqlQuery() {
+    var sparql = Queries[currentQueries[currentQueryIndex]];
+    var iconIdentifier = currentQueries[currentQueryIndex];
     var url = wdk.sparqlQuery(sparql)
-
-    getJSON(url,
-      function(err, data) {
-        if (err != null) {
-          console.log('Something went wrong: ' + err);
-        } else {
-          processData(data, iconIdentifier, startRendering);
-        }
-      });
+    
+    if(currentQueryIndex >= currentQueries.length) {
+      console.log('startrendering',queryArray.length);
+      processArray(queryArray);
+      
+    } else {
+      getJSON(url,
+        function(err, data) {
+          if (err != null) {
+            console.log('Something went wrong: ' + err);
+          } else {
+            console.log('processData',  currentQueries[currentQueryIndex]);
+            processData(data, iconIdentifier); 
+          }
+        });
+    }
   }
 
-  function processData(data, iconIdentifier, startRendering) {
+  function processData(data, iconIdentifier) {
     var headVars = data.head.vars;
     var bindings = data.results.bindings;
 
@@ -69,20 +80,20 @@ var WikiQuery = (function() {
           entry.icon = iconIdentifier;
         }
       }
-      output.innerHTML += '<br>';
+      
       queryArray.push(entry);
     }
-
-    if(startRendering) {
-      processArray(queryArray);
-    }
+    
+    currentQueryIndex ++;
+    startSparqlQuery();
   }
 
   function processArray(array) {
     for (var i = 0; i < array.length; i++) {
-      MarkerOverlay.createMarker(array[i]);
+      GoogleMarkerOverlay.createMarker(array[i]);
+      //MarkerOverlay.createMarker(array[i]);
     }
-    var allMarkerLabels = document.querySelectorAll('[data-year]');
+    //var allMarkerLabels = document.querySelectorAll('[data-year]');
     Timeline.relayMarkers();
   }
 
