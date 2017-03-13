@@ -3,22 +3,19 @@ var Timeline = (function() {
   exports.currentYear = 0;
   var yearValue, allMarkerLabels;
   var timeline;
-  var colors = {archsites:'#6d4000', cities:'#1c6d00', battles:'#8c0404'}
 
   exports.init = function() {
-
     yearValue = document.getElementById('year-value');
     timeline = new Dragdealer('main-slider', {
       animationCallback: function(x, y) {
         onTimelineDrag(x);
       }
     });
-
-    timeline.setValue(0,0);
   };
 
   exports.relayMarkers = function() {
     allMarkerLabels = GoogleMarkerOverlay.allMarkers;
+    timeline.setValue(0.5,0);
   }
 
   function onTimelineDrag(x) {
@@ -30,11 +27,14 @@ var Timeline = (function() {
         var labelYear = currentMarker.year;
 
         if(exports.currentYear >= labelYear) {
-          currentMarker.setVisible(true);
+
+          if(Filter.visibleGroups[currentMarker.type]) {
+            currentMarker.setVisible(true);
+          }
         } else if (exports.currentYear < labelYear) {
           currentMarker.setVisible(false);
           if(GoogleMarkerOverlay.infoWindow) {
-            GoogleMarkerOverlay.infoWindow.close();  
+            GoogleMarkerOverlay.infoWindow.close();
           }
         }
       }
@@ -47,7 +47,6 @@ var Timeline = (function() {
     } else {
       yearValue.innerHTML = '<a target="_blank" href="https://en.wikipedia.org/wiki/Year_zero"> 0 </>';
     }
-
   }
 
   return exports;

@@ -23,7 +23,7 @@
     <script src="js/Filter.js"></script>
     <!--<script src="js/Map.js"></script>
     <script src="js/MarkerOverlay.js"></script>-->
-    
+
 
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYQvAlWRYZRWJfzzvEyyHpoudv4zrU1x4&callback=initMap">
@@ -35,24 +35,24 @@
     </div>
 
     <div id="map"></div>
-    
-    <div class="filter-wrapper">
-      
+
+    <div class="filter-wrapper noselect">
+
       <input id="checkbox_archsites" class="filter-checkbox" checked="checked" type="checkbox">
       <label for="checkbox_archsites">
         <img src="img/archsite24.png" alt="">Archaeological Sites
       </label>
-      
+
       <input id="checkbox_settlements" class="filter-checkbox" checked="checked" type="checkbox">
       <label for="checkbox_settlements">
         <img src="img/house24.png" alt="">Settlements
       </label>
-      
+
       <input id="checkbox_battles" class="filter-checkbox" checked="checked" type="checkbox">
       <label for="checkbox_battles">
         <img src="img/battle24.png" alt="">Battles
       </label>
-      
+
     </div>
 
     <div id="main-slider" class="dragdealer">
@@ -62,8 +62,8 @@
     </div>
 
     <script>
-    
-    
+
+
     function initMap() {
       GoogleMapTool.init();
       WikiQuery.init();
@@ -71,9 +71,9 @@
       Filter.init();
       //MarkerOverlay.init();
       //MapTool.init();
-      
+
     }
-    
+
 
     </script>
 </body>

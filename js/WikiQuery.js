@@ -2,39 +2,34 @@ var WikiQuery = (function() {
   var exports = {};
   var title;
   var queryArray = [];
-  
-  var currentQueries = ['settlements'];
-  var currentQueries = ['archsites', 'settlements', 'battles'];
+
+  exports.currentQueries = ['settlements'];
+  exports.currentQueries = ['archsites', 'settlements', 'battles'];
   var currentQueryIndex = 0;
 
   exports.init = function(data) {
     title = document.getElementById('title');
-
-    for (var i = 0; i < currentQueries.length; i++) {
-      currentQueries[i]
-    }
-    
     startSparqlQuery();
   };
 
 
   function startSparqlQuery() {
-    var sparql = Queries[currentQueries[currentQueryIndex]];
-    var iconIdentifier = currentQueries[currentQueryIndex];
+    var sparql = Queries[exports.currentQueries[currentQueryIndex]];
+    var iconIdentifier = exports.currentQueries[currentQueryIndex];
     var url = wdk.sparqlQuery(sparql)
-    
-    if(currentQueryIndex >= currentQueries.length) {
+
+    if(currentQueryIndex >= exports.currentQueries.length) {
       console.log('startrendering',queryArray.length);
       processArray(queryArray);
-      
+
     } else {
       getJSON(url,
         function(err, data) {
           if (err != null) {
             console.log('Something went wrong: ' + err);
           } else {
-            console.log('processData',  currentQueries[currentQueryIndex]);
-            processData(data, iconIdentifier); 
+            console.log('processData',  exports.currentQueries[currentQueryIndex]);
+            processData(data, iconIdentifier);
           }
         });
     }
@@ -82,10 +77,10 @@ var WikiQuery = (function() {
           entry.icon = iconIdentifier;
         }
       }
-      
+
       queryArray.push(entry);
     }
-    
+
     currentQueryIndex ++;
     startSparqlQuery();
   }

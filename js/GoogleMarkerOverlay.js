@@ -27,9 +27,9 @@ var GoogleMarkerOverlay = (function() {
     } else if (year > 0) {
       yearString = year + ' AD';
     }
-    
+
     exports.infoWindow = new google.maps.InfoWindow();
-    
+
     var iconBase = 'img/';
 
     var icons = {
@@ -50,20 +50,22 @@ var GoogleMarkerOverlay = (function() {
       icon: icons[iconType].icon,
       type: iconType,
       year: year,
-      visible: false
+      visible: false,
+      zIndex: 100 + WikiQuery.currentQueries.indexOf(iconType)
     });
-    
+
     if (!exports.markerGroups[iconType]) exports.markerGroups[iconType] = [];
-    
+
     exports.markerGroups[iconType].push(marker);
     exports.allMarkers.push(marker);
-    
+
     var html = '<a class="marker-link" target="_blank" href="https://en.wikipedia.org/wiki/'+labelString+'"><b>'+label+' / '+yearString+'</b></a>';
     bindInfoWindow(marker, GoogleMapTool.map, exports.infoWindow, html);
   }
-  
+
   function bindInfoWindow(marker, map, infoWindow, html) {
     google.maps.event.addListener(marker, 'click', function () {
+      //console.log(marker);
       exports.infoWindow.setContent(html);
       exports.infoWindow.open(GoogleMapTool.map, marker);
     });
