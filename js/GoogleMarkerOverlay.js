@@ -11,7 +11,7 @@ var GoogleMarkerOverlay = (function() {
   exports.createMarker = function(markerData) {
     var latlng = markerData.coord;
     var label = markerData.label;
-    var year = markerData.founded;
+    var year = markerData.year;
     var iconType = markerData.icon;
 
     if(!latlng) {

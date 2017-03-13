@@ -48,20 +48,23 @@ var WikiQuery = (function() {
       for (var k = 0; k < headVars.length; k++) {
         //looping through keys in object
 
-        if (headVars[k] == 'founded') {
-          //converting founded date
-          var literalTime = bindings[j][headVars[k]].value;
-          literalTime = literalTime.split('T');
-          var date = literalTime[0].split('-')
-          var convertedDate = null;
+        if (headVars[k] == 'year') {
+          //converting year date
+          if(bindings[j][headVars[k]]) {
+            var literalTime = bindings[j][headVars[k]].value;
+            literalTime = literalTime.split('T');
+            var date = literalTime[0].split('-')
+            var convertedDate = null;
 
-          if (date.length === 4) {
-            //year is BC
-            convertedDate = parseInt(date[1], 10) * -1;
-          } else {
-            convertedDate = parseInt(date[0], 10);
+            if (date.length === 4) {
+              //year is BC
+              convertedDate = parseInt(date[1], 10) * -1;
+            } else {
+              convertedDate = parseInt(date[0], 10);
+            }
+            entry[headVars[k]] = convertedDate;
           }
-          entry[headVars[k]] = convertedDate;
+
         } else if (headVars[k] == 'coord') {
           //adding geocoordinate
           var coordString = bindings[j][headVars[k]].value;
