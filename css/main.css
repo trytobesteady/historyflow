@@ -57,3 +57,7 @@ label img {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+#map > div > div > div.gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom {
+  top: 0;
+}

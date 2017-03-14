@@ -3,8 +3,8 @@ var WikiQuery = (function() {
   var title;
   var queryArray = [];
 
-  exports.currentQueries = ['settlements'];
-  exports.currentQueries = ['archsites', 'settlements', 'battles'];
+  //exports.currentQueries = ['settlements'];
+  exports.currentQueries = ['archsites', 'settlements', 'battles', 'churches', 'monasteries', 'mosques' ];
   var currentQueryIndex = 0;
 
   exports.init = function(data) {
@@ -52,6 +52,9 @@ var WikiQuery = (function() {
           //converting year date
           if(bindings[j][headVars[k]]) {
             var literalTime = bindings[j][headVars[k]].value;
+            
+            //console.log(literalTime);
+            
             literalTime = literalTime.split('T');
             var date = literalTime[0].split('-')
             var convertedDate = null;
@@ -62,6 +65,16 @@ var WikiQuery = (function() {
             } else {
               convertedDate = parseInt(date[0], 10);
             }
+            
+            /*
+            if(isNaN(convertedDate)) {
+              console.log(literalTime, 'nan',convertedDate);
+            } else {
+              console.log(literalTime);
+            }
+            */
+            
+            
             entry[headVars[k]] = convertedDate;
           }
 
@@ -91,9 +104,7 @@ var WikiQuery = (function() {
   function processArray(array) {
     for (var i = 0; i < array.length; i++) {
       GoogleMarkerOverlay.createMarker(array[i]);
-      //MarkerOverlay.createMarker(array[i]);
     }
-    //var allMarkerLabels = document.querySelectorAll('[data-year]');
     Timeline.relayMarkers();
   }
 

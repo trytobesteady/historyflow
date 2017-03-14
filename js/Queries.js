@@ -37,6 +37,40 @@ var Queries = (function() {
     	?subj rdfs:label ?label filter (lang(?label) = "en")
     }
     `;
+    
+    exports.monasteries = `
+    SELECT ?label ?coord ?year
+    WHERE
+    {
+      ?subj wdt:P31 wd:Q44613 .
+      ?subj wdt:P625 ?coord .
+      ?subj wdt:P571 ?year .
+      ?subj rdfs:label ?label filter (lang(?label) = "en")
+    }
+    `;
+    
+    exports.churches = `
+    SELECT ?label ?coord ?year
+    WHERE
+    {
+      ?subj wdt:P31 wd:Q16970 .
+      ?subj wdt:P625 ?coord .
+      ?subj wdt:P571 ?year .
+      ?subj rdfs:label ?label filter (lang(?label) = "en")
+    }
+    `;
+    
+    exports.mosques = `
+    SELECT ?label ?coord ?year
+    WHERE
+    {
+      ?subj wdt:P31 wd:Q32815 .
+      ?subj wdt:P625 ?coord .
+      ?subj wdt:P571 ?year .
+      ?subj rdfs:label ?label filter (lang(?label) = "en")
+    }
+    `;
+    
 
     return exports;
 })();

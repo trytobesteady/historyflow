@@ -16,6 +16,7 @@ var Filter = (function() {
   };
 
   function onCheckBox(e) {
+    Timeline.getMinMaxYears();
     //update current hide&show flags
     for (var i = 0; i < checkboxes.length; i++) {
       var cbname = checkboxes[i].id.split('_')[1];

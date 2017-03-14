@@ -4,16 +4,13 @@
 
 <body>
     <link rel="stylesheet" href="css/dragdealer.css"/>
-    <link rel="stylesheet" href="css/leaflet.css"/>
     <link rel="stylesheet" href="css/main.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.3/MarkerCluster.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.3/MarkerCluster.Default.css" />
 
-    <script src="lib/leaflet.js"></script>
     <script src="lib/wikidata-sdk.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dragdealer/0.9.8/dragdealer.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.0.3/leaflet.markercluster.js"></script>
 
     <script src="js/Timeline.js"></script>
     <script src="js/Queries.js"></script>
@@ -21,8 +18,6 @@
     <script src="js/GoogleMap.js"></script>
     <script src="js/GoogleMarkerOverlay.js"></script>
     <script src="js/Filter.js"></script>
-    <!--<script src="js/Map.js"></script>
-    <script src="js/MarkerOverlay.js"></script>-->
 
 
     <script async defer
@@ -45,12 +40,27 @@
 
       <input id="checkbox_settlements" class="filter-checkbox" checked="checked" type="checkbox">
       <label for="checkbox_settlements">
-        <img src="img/house24.png" alt="">Settlements
+        <img src="img/settlement24.png" alt="">Settlements
       </label>
 
       <input id="checkbox_battles" class="filter-checkbox" checked="checked" type="checkbox">
       <label for="checkbox_battles">
         <img src="img/battle24.png" alt="">Battles
+      </label>
+      
+      <input id="checkbox_churches" class="filter-checkbox" checked="checked" type="checkbox">
+      <label for="checkbox_churches">
+        <img src="img/church24.png" alt="">Churches
+      </label>
+      
+      <input id="checkbox_monasteries" class="filter-checkbox" checked="checked" type="checkbox">
+      <label for="checkbox_monasteries">
+        <img src="img/monastery24.png" alt="">Monasteries
+      </label>
+      
+      <input id="checkbox_mosques" class="filter-checkbox" checked="checked" type="checkbox">
+      <label for="checkbox_mosques">
+        <img src="img/islam24.png" alt="">Mosques
       </label>
 
     </div>

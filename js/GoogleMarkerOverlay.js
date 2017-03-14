@@ -14,8 +14,15 @@ var GoogleMarkerOverlay = (function() {
     var year = markerData.year;
     var iconType = markerData.icon;
 
+    //filter out latlng
     if(!latlng) {
       console.log(label, latlng);
+      return;
+    }
+    
+    //filter out invalid years
+    if(!year) {
+      //console.log(label, year);
       return;
     }
 
@@ -34,20 +41,33 @@ var GoogleMarkerOverlay = (function() {
 
     var icons = {
       archsites: {
-        icon: iconBase + 'archsite24.png'
+        img: iconBase + 'archsite24.png'
       },
       settlements: {
-        icon: iconBase + 'house24.png'
+        img: iconBase + 'settlement24.png'
       },
       battles: {
-        icon: iconBase + 'battle24.png'
+        img: iconBase + 'battle24.png'
+      },
+      monasteries: {
+        img: iconBase + 'monastery24.png'
+      },
+      churches: {
+        img: iconBase + 'church24.png'
+      },
+      mosques: {
+        img: iconBase + 'islam24.png'
       }
     };
+    
+    if(!icons[iconType]) {
+      icons[iconType] = { img: iconBase + 'default.png' };
+    }
 
     var marker = new google.maps.Marker({
       position: new google.maps.LatLng(latlng[0], latlng[1]),
       map: GoogleMapTool.map,
-      icon: icons[iconType].icon,
+      icon: icons[iconType].img,
       type: iconType,
       year: year,
       visible: false,
@@ -66,6 +86,13 @@ var GoogleMarkerOverlay = (function() {
   function bindInfoWindow(marker, map, infoWindow, html) {
     google.maps.event.addListener(marker, 'click', function () {
       //console.log(marker);
+      
+      /*
+      //pan to clicked marker
+      var latLng = marker.getPosition();
+      GoogleMapTool.map.panTo(latLng);
+      */
+      
       exports.infoWindow.setContent(html);
       exports.infoWindow.open(GoogleMapTool.map, marker);
     });

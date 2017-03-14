@@ -3,6 +3,9 @@ var Timeline = (function() {
   exports.currentYear = 0;
   var yearValue, allMarkerLabels;
   var timeline;
+  
+  var END_YEAR = 12000;
+  var START_YEAR = 2000;
 
   exports.init = function() {
     yearValue = document.getElementById('year-value');
@@ -17,9 +20,23 @@ var Timeline = (function() {
     allMarkerLabels = GoogleMarkerOverlay.allMarkers;
     timeline.setValue(0.5,0);
   }
+  
+  exports.getMinMaxYears = function() {
+    
+    var minYear = Math.min.apply( Math, allMarkerLabels );
+    
+    var test = Math.max.apply(Math,allMarkerLabels.map(function(o){return o.year;}))
+    
+    console.log(test);
+    
+    for (var i = 0; i < allMarkerLabels.length; i++) {
+      //console.log(allMarkerLabels[i].year);  
+    }
+    
+  }
 
   function onTimelineDrag(x) {
-    exports.currentYear = Math.round(x * 14000) - 12000;
+    exports.currentYear = Math.round(x * (END_YEAR+START_YEAR)) - END_YEAR;
 
     if(allMarkerLabels) {
       for (var i = 0; i < allMarkerLabels.length; i++) {
