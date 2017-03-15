@@ -3,7 +3,7 @@ var Timeline = (function() {
   exports.currentYear = 0;
   var yearValue, allMarkerLabels;
   var timeline;
-  
+
   var END_YEAR = 12000;
   var START_YEAR = 2000;
 
@@ -20,19 +20,20 @@ var Timeline = (function() {
     allMarkerLabels = GoogleMarkerOverlay.allMarkers;
     timeline.setValue(0.5,0);
   }
-  
+
   exports.getMinMaxYears = function() {
-    
-    var minYear = Math.min.apply( Math, allMarkerLabels );
-    
-    var test = Math.max.apply(Math,allMarkerLabels.map(function(o){return o.year;}))
-    
-    console.log(test);
-    
-    for (var i = 0; i < allMarkerLabels.length; i++) {
-      //console.log(allMarkerLabels[i].year);  
+    var lowest = Number.POSITIVE_INFINITY;
+    var highest = Number.NEGATIVE_INFINITY;
+    var tmp;
+
+    for (var i = 0; i < WikiQuery.queryArray.length; i++) {
+      tmp = WikiQuery.queryArray[i].year;
+      if (tmp < lowest) lowest = tmp;
+      if (tmp > highest) highest = tmp;
     }
-    
+
+    console.log(highest, lowest);
+
   }
 
   function onTimelineDrag(x) {

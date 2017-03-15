@@ -16,13 +16,13 @@ var GoogleMarkerOverlay = (function() {
 
     //filter out latlng
     if(!latlng) {
-      console.log(label, latlng);
+      //console.log(label, latlng);
       return;
     }
-    
+
     //filter out invalid years
     if(!year) {
-      //console.log(label, year);
+      //console.log(label, year, markerData);
       return;
     }
 
@@ -59,7 +59,7 @@ var GoogleMarkerOverlay = (function() {
         img: iconBase + 'islam24.png'
       }
     };
-    
+
     if(!icons[iconType]) {
       icons[iconType] = { img: iconBase + 'default.png' };
     }
@@ -86,13 +86,13 @@ var GoogleMarkerOverlay = (function() {
   function bindInfoWindow(marker, map, infoWindow, html) {
     google.maps.event.addListener(marker, 'click', function () {
       //console.log(marker);
-      
+
       /*
       //pan to clicked marker
       var latLng = marker.getPosition();
       GoogleMapTool.map.panTo(latLng);
       */
-      
+
       exports.infoWindow.setContent(html);
       exports.infoWindow.open(GoogleMapTool.map, marker);
     });

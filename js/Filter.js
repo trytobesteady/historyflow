@@ -9,7 +9,6 @@ var Filter = (function() {
 
     for (var i = 0; i < checkboxes.length; i++) {
       checkboxes[i].addEventListener('change', onCheckBox);
-
       var currentCheckboxIdentifier = checkboxes[i].id.split('_')[1];
       exports.visibleGroups[currentCheckboxIdentifier] = checkboxes[i].checked;
     }
