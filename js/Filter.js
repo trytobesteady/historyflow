@@ -15,13 +15,15 @@ var Filter = (function() {
   };
 
   function onCheckBox(e) {
-    Timeline.getMinMaxYears();
+    
     //update current hide&show flags
     for (var i = 0; i < checkboxes.length; i++) {
       var cbname = checkboxes[i].id.split('_')[1];
       exports.visibleGroups[cbname] = checkboxes[i].checked;
     }
-
+    
+    Timeline.getMinMaxYears();
+    
     var currentCheckboxIdentifier = e.target.id.split('_')[1];
     //hiding&showing of checkboxed markers
     for (var i = 0; i < GoogleMarkerOverlay.markerGroups[currentCheckboxIdentifier].length; i++) {

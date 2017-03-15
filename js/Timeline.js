@@ -4,8 +4,8 @@ var Timeline = (function() {
   var yearValue, allMarkerLabels;
   var timeline;
 
-  var END_YEAR = 12000;
-  var START_YEAR = 2000;
+  var startYear = -12000;
+  var endYear = 2000;
 
   exports.init = function() {
     yearValue = document.getElementById('year-value');
@@ -18,26 +18,36 @@ var Timeline = (function() {
 
   exports.relayMarkers = function() {
     allMarkerLabels = GoogleMarkerOverlay.allMarkers;
-    timeline.setValue(0.5,0);
   }
 
   exports.getMinMaxYears = function() {
     var lowest = Number.POSITIVE_INFINITY;
     var highest = Number.NEGATIVE_INFINITY;
-    var tmp;
+    var year, icon;
 
     for (var i = 0; i < WikiQuery.queryArray.length; i++) {
-      tmp = WikiQuery.queryArray[i].year;
-      if (tmp < lowest) lowest = tmp;
-      if (tmp > highest) highest = tmp;
+      icon = WikiQuery.queryArray[i].icon;
+      
+      //check if current icon is visible due to filter settings
+      //if so include it in max min year calculation
+      if(Filter.visibleGroups[icon]) {
+        year = WikiQuery.queryArray[i].year;
+        if (year < lowest) lowest = year;
+        if (year > highest) highest = year;
+      }
     }
 
-    console.log(highest, lowest);
-
+    endYear = highest;
+    startYear = lowest;
+    
+    var timelineX = timeline.getValue()[0];
+    exports.currentYear = Math.round(timelineX * (Math.abs(startYear)+endYear)) - Math.abs(startYear);
+    updateTimelineLabel();
   }
 
   function onTimelineDrag(x) {
-    exports.currentYear = Math.round(x * (END_YEAR+START_YEAR)) - END_YEAR;
+    startYear = Math.abs(startYear);
+    exports.currentYear = Math.round(x * (startYear+endYear)) - startYear;
 
     if(allMarkerLabels) {
       for (var i = 0; i < allMarkerLabels.length; i++) {
@@ -45,11 +55,12 @@ var Timeline = (function() {
         var labelYear = currentMarker.year;
 
         if(exports.currentYear >= labelYear) {
-
           if(Filter.visibleGroups[currentMarker.type]) {
             currentMarker.setVisible(true);
           }
+          
         } else if (exports.currentYear < labelYear) {
+          
           currentMarker.setVisible(false);
           if(GoogleMarkerOverlay.infoWindow) {
             GoogleMarkerOverlay.infoWindow.close();
@@ -57,7 +68,10 @@ var Timeline = (function() {
         }
       }
     }
-
+    updateTimelineLabel();
+  }
+  
+  function updateTimelineLabel() {
     if(exports.currentYear < 0) {
       yearValue.innerHTML = Math.abs(exports.currentYear) + ' BC';
     } else if (exports.currentYear > 0) {
