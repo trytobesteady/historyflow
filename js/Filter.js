@@ -2,10 +2,12 @@ var Filter = (function() {
   var exports = {};
   exports.map = null;
   exports.visibleGroups = {};
-  var checkboxes;
+  var checkboxes, adjustCheckbox;
 
   exports.init = function() {
     checkboxes = document.getElementsByClassName('filter-checkbox');
+    adjustCheckbox = document.getElementById('checkbox_timeline');
+    adjustCheckbox.addEventListener('change', onAdjustTimeline)
 
     for (var i = 0; i < checkboxes.length; i++) {
       checkboxes[i].addEventListener('change', onCheckBox);
@@ -13,9 +15,12 @@ var Filter = (function() {
       exports.visibleGroups[currentCheckboxIdentifier] = checkboxes[i].checked;
     }
   };
+  
+  function onAdjustTimeline(e) {
+    Timeline.adjustTimelineFlag = e.target.checked;
+  }
 
   function onCheckBox(e) {
-    
     //update current hide&show flags
     for (var i = 0; i < checkboxes.length; i++) {
       var cbname = checkboxes[i].id.split('_')[1];

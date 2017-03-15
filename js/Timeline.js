@@ -1,8 +1,10 @@
 var Timeline = (function() {
   var exports = {};
   exports.currentYear = 0;
+  exports.adjustTimelineFlag = false;
   var yearValue, allMarkerLabels;
   var timeline;
+  
 
   var startYear = -12000;
   var endYear = 2000;
@@ -18,31 +20,37 @@ var Timeline = (function() {
 
   exports.relayMarkers = function() {
     allMarkerLabels = GoogleMarkerOverlay.allMarkers;
+    exports.getMinMaxYears();
   }
 
   exports.getMinMaxYears = function() {
-    var lowest = Number.POSITIVE_INFINITY;
-    var highest = Number.NEGATIVE_INFINITY;
-    var year, icon;
-
-    for (var i = 0; i < WikiQuery.queryArray.length; i++) {
-      icon = WikiQuery.queryArray[i].icon;
-      
-      //check if current icon is visible due to filter settings
-      //if so include it in max min year calculation
-      if(Filter.visibleGroups[icon]) {
-        year = WikiQuery.queryArray[i].year;
-        if (year < lowest) lowest = year;
-        if (year > highest) highest = year;
+    if(exports.adjustTimelineFlag) {
+      var lowest = Number.POSITIVE_INFINITY;
+      var highest = Number.NEGATIVE_INFINITY;
+      var year, icon;
+  
+      for (var i = 0; i < WikiQuery.queryArray.length; i++) {
+        icon = WikiQuery.queryArray[i].icon;
+        
+        //check if current icon is visible due to filter settings
+        //if so include it in max min year calculation
+        if(Filter.visibleGroups[icon]) {
+          year = WikiQuery.queryArray[i].year;
+          if (year < lowest) lowest = year;
+          if (year > highest) highest = year;
+        }
       }
+  
+      endYear = highest;
+      startYear = lowest;
+      
+      var timelineX = timeline.getValue()[0];
+      exports.currentYear = Math.round(timelineX * (Math.abs(startYear)+endYear)) - Math.abs(startYear);
+      updateTimelineLabel();
+    } else {
+      startYear = -12000;
+      endYear = 2000;
     }
-
-    endYear = highest;
-    startYear = lowest;
-    
-    var timelineX = timeline.getValue()[0];
-    exports.currentYear = Math.round(timelineX * (Math.abs(startYear)+endYear)) - Math.abs(startYear);
-    updateTimelineLabel();
   }
 
   function onTimelineDrag(x) {
