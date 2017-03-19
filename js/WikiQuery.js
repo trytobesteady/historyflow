@@ -1,7 +1,7 @@
 var WikiQuery = (function() {
   var exports = {};
   exports.queryArray = [];
-  var title;
+  var title, checkboxWrapper;
 
   //exports.currentQueries = ['settlements'];
   exports.currentQueries = ['archsites', 'settlements', 'battles', 'churches', 'monasteries', 'mosques' ];
@@ -9,6 +9,8 @@ var WikiQuery = (function() {
 
   exports.init = function(data) {
     title = document.getElementById('title');
+    checkboxWrapper = document.getElementsByClassName('checkbox-wrapper');
+
     startSparqlQuery();
   };
 
@@ -28,8 +30,19 @@ var WikiQuery = (function() {
           if (err != null) {
             console.log('Something went wrong: ' + err);
           } else {
-            console.log('processData',  exports.currentQueries[currentQueryIndex]);
+            //process imported data
             processData(data, iconIdentifier);
+
+            //arm filter checkboxes
+            setTimeout(function () {
+              for (var i = 0; i < checkboxWrapper.length; i++) {
+                if(checkboxWrapper[i].id == iconIdentifier) {
+                  checkboxWrapper[i].style.opacity = 1;
+                  checkboxWrapper[i].style.pointerEvents = 'auto';
+                  checkboxWrapper[i].style.cursor = 'pointer';
+                }
+              }
+            }, 500);
           }
         });
     }
@@ -67,9 +80,10 @@ var WikiQuery = (function() {
               var literalTime = bindings[j][headVars[k]].value;
 
               var momentYear = moment(literalTime, 'Y').year();
+
+              //hack: if year lies in the future, revert it to BC
               var currentYear = moment().format('Y');
               var currentYear = moment().year();
-
               if(momentYear > currentYear) {
                 momentYear = momentYear * -1;
               }

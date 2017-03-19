@@ -40,6 +40,19 @@ html, body {
 .filter-checkbox {
   margin-top: 18px;
   margin-left: 20px;
+  cursor: pointer;
+}
+
+.checkbox-wrapper {
+  display: inline-block;
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: none;
+  height: 100%;
+}
+
+.checkbox-wrapper label{
+  cursor: pointer;
 }
 
 label img {

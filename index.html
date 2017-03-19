@@ -21,9 +21,7 @@
     <script src="js/Filter.js"></script>
 
 
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYQvAlWRYZRWJfzzvEyyHpoudv4zrU1x4&callback=initMap">
-    </script>
+
 
     <div class="debug-output">
       <h2 id="title"></h2>
@@ -33,41 +31,53 @@
     <div id="map"></div>
 
     <div class="filter-wrapper noselect">
-      
+
       <input id="checkbox_timeline" class="checkbox" checked="checked" type="checkbox">
       <label for="checkbox_timeline">
         Adjust Timeline
       </label>
 
-      <input id="checkbox_archsites" class="filter-checkbox" checked="checked" type="checkbox">
-      <label for="checkbox_archsites">
-        <img src="img/archsite24.png" alt="">Archaeological Sites
-      </label>
+      <div id="archsites" class="checkbox-wrapper">
+        <input id="checkbox_archsites" class="filter-checkbox" checked="checked" type="checkbox">
+        <label for="checkbox_archsites">
+          <img src="img/archsite24.png" alt="">Archaeological Sites
+        </label>
+      </div>
 
-      <input id="checkbox_settlements" class="filter-checkbox" checked="checked" type="checkbox">
-      <label for="checkbox_settlements">
-        <img src="img/settlement24.png" alt="">Settlements
-      </label>
+      <div id="settlements" class="checkbox-wrapper">
+        <input id="checkbox_settlements" class="filter-checkbox" checked="checked" type="checkbox">
+        <label for="checkbox_settlements">
+          <img src="img/settlement24.png" alt="">Settlements
+        </label>
+      </div>
 
-      <input id="checkbox_battles" class="filter-checkbox" checked="checked" type="checkbox">
-      <label for="checkbox_battles">
-        <img src="img/battle24.png" alt="">Battles
-      </label>
+      <div id="battles" class="checkbox-wrapper">
+        <input id="checkbox_battles" class="filter-checkbox" checked="checked" type="checkbox">
+        <label for="checkbox_battles">
+          <img src="img/battle24.png" alt="">Battles
+        </label>
+      </div>
 
-      <input id="checkbox_churches" class="filter-checkbox" checked="checked" type="checkbox">
-      <label for="checkbox_churches">
-        <img src="img/church24.png" alt="">Churches
-      </label>
+      <div id="churches" class="checkbox-wrapper">
+        <input id="checkbox_churches" class="filter-checkbox" checked="checked" type="checkbox">
+        <label for="checkbox_churches">
+          <img src="img/church24.png" alt="">Churches
+        </label>
+      </div>
 
-      <input id="checkbox_monasteries" class="filter-checkbox" checked="checked" type="checkbox">
-      <label for="checkbox_monasteries">
-        <img src="img/monastery24.png" alt="">Monasteries
-      </label>
+      <div id="monasteries" class="checkbox-wrapper">
+        <input id="checkbox_monasteries" class="filter-checkbox" checked="checked" type="checkbox">
+        <label for="checkbox_monasteries">
+          <img src="img/monastery24.png" alt="">Monasteries
+        </label>
+      </div>
 
-      <input id="checkbox_mosques" class="filter-checkbox" checked="checked" type="checkbox">
-      <label for="checkbox_mosques">
-        <img src="img/islam24.png" alt="">Mosques
-      </label>
+      <div id="mosques" class="checkbox-wrapper">
+        <input id="checkbox_mosques" class="filter-checkbox" checked="checked" type="checkbox">
+        <label for="checkbox_mosques">
+          <img src="img/islam24.png" alt="">Mosques
+        </label>
+      </div>
 
     </div>
 
@@ -78,8 +88,6 @@
     </div>
 
     <script>
-
-
     function initMap() {
       GoogleMapTool.init();
       WikiQuery.init();
@@ -89,9 +97,12 @@
       //MapTool.init();
 
     }
-
-
     </script>
+
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYQvAlWRYZRWJfzzvEyyHpoudv4zrU1x4&callback=initMap">
+    </script>
+
 </body>
 
 </html>
