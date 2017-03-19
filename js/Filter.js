@@ -15,9 +15,10 @@ var Filter = (function() {
       exports.visibleGroups[currentCheckboxIdentifier] = checkboxes[i].checked;
     }
   };
-  
+
   function onAdjustTimeline(e) {
     Timeline.adjustTimelineFlag = e.target.checked;
+    Timeline.getMinMaxYears();
   }
 
   function onCheckBox(e) {
@@ -26,9 +27,9 @@ var Filter = (function() {
       var cbname = checkboxes[i].id.split('_')[1];
       exports.visibleGroups[cbname] = checkboxes[i].checked;
     }
-    
+
     Timeline.getMinMaxYears();
-    
+
     var currentCheckboxIdentifier = e.target.id.split('_')[1];
     //hiding&showing of checkboxed markers
     for (var i = 0; i < GoogleMarkerOverlay.markerGroups[currentCheckboxIdentifier].length; i++) {

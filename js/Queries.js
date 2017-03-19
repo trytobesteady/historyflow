@@ -5,7 +5,7 @@ var Queries = (function() {
     SELECT ?label ?coord ?year
     WHERE
     {
-      ?subj wdt:P31 wd:Q486972 .
+      ?subj wdt:P31/wdt:P279* wd:Q486972 .
       ?subj wdt:P625 ?coord .
       ?subj wdt:P571 ?year .
       ?subj rdfs:label ?label filter (lang(?label) = "en")
@@ -16,7 +16,7 @@ var Queries = (function() {
     SELECT ?label ?coord ?year
     WHERE
     {
-      ?subj wdt:P31 wd:Q839954 .
+      ?subj wdt:P31/wdt:P279* wd:Q839954 .
       ?subj wdt:P625 ?coord .
       ?subj wdt:P571 ?year .
       ?subj rdfs:label ?label filter (lang(?label) = "en")
@@ -27,7 +27,7 @@ var Queries = (function() {
     SELECT ?label ?coord ?year
     WHERE
     {
-    	?subj wdt:P31 wd:Q178561 .
+    	?subj wdt:P31/wdt:P279* wd:Q178561 .
     	?subj wdt:P625 ?coord .
     	OPTIONAL {?subj wdt:P580 ?d1}
     	OPTIONAL {?subj wdt:P585 ?d2}
@@ -37,29 +37,29 @@ var Queries = (function() {
     	?subj rdfs:label ?label filter (lang(?label) = "en")
     }
     `;
-    
+
     exports.monasteries = `
     SELECT ?label ?coord ?year
     WHERE
     {
-      ?subj wdt:P31 wd:Q44613 .
+      ?subj wdt:P31/wdt:P279* wd:Q44613 .
       ?subj wdt:P625 ?coord .
       ?subj wdt:P571 ?year .
       ?subj rdfs:label ?label filter (lang(?label) = "en")
     }
     `;
-    
+
     exports.churches = `
     SELECT ?label ?coord ?year
     WHERE
     {
-      ?subj wdt:P31 wd:Q16970 .
+      ?subj wdt:P31/wdt:P279* wd:Q16970 .
       ?subj wdt:P625 ?coord .
       ?subj wdt:P571 ?year .
       ?subj rdfs:label ?label filter (lang(?label) = "en")
     }
     `;
-    
+
     exports.mosques = `
     SELECT ?label ?coord ?year
     WHERE
@@ -70,7 +70,18 @@ var Queries = (function() {
       ?subj rdfs:label ?label filter (lang(?label) = "en")
     }
     `;
-    
+
+    exports.test = `
+    SELECT ?label ?coord ?year
+    WHERE
+    {
+      ?subj wdt:P31/wdt:P279* wd:Q1370598 .
+      ?subj wdt:P625 ?coord .
+      ?subj wdt:P571 ?year .
+      ?subj rdfs:label ?label filter (lang(?label) = "en")
+    }
+    `;
+
 
     return exports;
 })();

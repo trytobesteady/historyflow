@@ -68,6 +68,8 @@ var Timeline = (function() {
       //default to standard scale when "adjust timeline" checkbox is unchecked
       startYear = -12000;
       endYear = 2000;
+
+      updateTimelineLabel();
     }
 
     //console.log(exports.adjustTimelineFlag, startYear, endYear, totalYears);

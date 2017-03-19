@@ -57,6 +57,9 @@ var GoogleMarkerOverlay = (function() {
       },
       mosques: {
         img: iconBase + 'islam24.png'
+      },
+      test: {
+        img: iconBase + 'default.png'
       }
     };
 

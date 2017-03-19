@@ -3,8 +3,8 @@ var WikiQuery = (function() {
   exports.queryArray = [];
   var title, checkboxWrapper;
 
-  //exports.currentQueries = ['settlements'];
-  exports.currentQueries = ['archsites', 'settlements', 'battles', 'churches', 'monasteries', 'mosques' ];
+  //exports.currentQueries = ['churches', 'monasteries', 'mosques', 'test'];
+  exports.currentQueries = ['archsites', 'settlements', 'battles', 'churches', 'monasteries', 'mosques', 'test' ];
   var currentQueryIndex = 0;
 
   exports.init = function(data) {
@@ -20,6 +20,7 @@ var WikiQuery = (function() {
     var iconIdentifier = exports.currentQueries[currentQueryIndex];
     var url = wdk.sparqlQuery(sparql)
 
+    //cycle through queries
     if(currentQueryIndex >= exports.currentQueries.length) {
       console.log('startrendering', exports.queryArray.length);
       processArray(exports.queryArray);
@@ -30,6 +31,9 @@ var WikiQuery = (function() {
           if (err != null) {
             console.log('Something went wrong: ' + err);
           } else {
+
+            console.log(iconIdentifier, data.results.bindings.length);
+
             //process imported data
             processData(data, iconIdentifier);
 
@@ -95,7 +99,7 @@ var WikiQuery = (function() {
       }
 
       if(entry.year) {
-        //console.log(entry.year);
+        //console.log(entry);
         exports.queryArray.push(entry);
       };
     }
