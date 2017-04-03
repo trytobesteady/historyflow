@@ -72,13 +72,13 @@ var Queries = (function() {
     `;
 
     exports.test = `
-    SELECT ?label ?coord ?year
-    WHERE
-    {
-      ?subj wdt:P31/wdt:P279* wd:Q1370598 .
-      ?subj wdt:P625 ?coord .
-      ?subj wdt:P571 ?year .
-      ?subj rdfs:label ?label filter (lang(?label) = "en")
+    SELECT ?label ?coord ?year ?religion WHERE {
+      ?subj (wdt:P31/wdt:P279*) wd:Q1370598.
+      ?subj wdt:P625 ?coord.
+      ?subj wdt:P571 ?year.
+      ?subj rdfs:label ?label.
+      FILTER((LANG(?label)) = "en")
+      OPTIONAL { ?subj wdt:P140 ?religion. }
     }
     `;
 

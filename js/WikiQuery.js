@@ -3,8 +3,8 @@ var WikiQuery = (function() {
   exports.queryArray = [];
   var title, checkboxWrapper;
 
-  //exports.currentQueries = ['churches', 'monasteries', 'mosques', 'test'];
-  exports.currentQueries = ['archsites', 'settlements', 'battles', 'churches', 'monasteries', 'mosques', 'test' ];
+  exports.currentQueries = ['archsites', 'churches', 'monasteries', 'mosques'];
+  //exports.currentQueries = ['archsites', 'settlements', 'battles', 'churches', 'monasteries', 'mosques', 'test' ];
   var currentQueryIndex = 0;
 
   exports.init = function(data) {

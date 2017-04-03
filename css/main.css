@@ -31,7 +31,7 @@ html, body {
 
 .filter-wrapper {
   position: absolute;
-  bottom: 30px;
+  bottom: 0px;
   width: 100%;
   height: 50px;
   background-color: rgba(190, 190, 190, 1)
