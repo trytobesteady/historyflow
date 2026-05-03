@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages and FTP
 
 on:
   push:
@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  deploy-pages:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -28,3 +28,15 @@ jobs:
           path: project
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  deploy-ftp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: project/
+          server-dir: ${{ secrets.FTP_TARGET_DIR }}
