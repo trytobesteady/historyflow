@@ -1,0 +1,9 @@
+{
+  "name": "historyflow",
+  "version": "1.0.0",
+  "description": "History Flow — an interactive historical atlas of cities and people through time",
+  "scripts": {
+    "start": "npx serve project -l 3000",
+    "dev": "npx serve project -l 3000"
+  }
+}

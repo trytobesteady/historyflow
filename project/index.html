@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>History Flow — Cities Through Time</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IM+Fell+English+SC&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script src="data/cities.js"></script>
+<script src="data/people.js"></script>
+<style>
+:root {
+  --paper: #f1e8d4;
+  --paper-dark: #e4d6b7;
+  --paper-shadow: #d4c39d;
+  --ink: #2c2416;
+  --ink-soft: #5a4a32;
+  --ink-faint: #8a7755;
+  --sepia: #6b4423;
+  --accent: #8b3a2a;
+  --water: #d7c8a3;
+  --water-deep: #c8b78a;
+  --land: #ebdcb8;
+  --land-border: #a8906a;
+  --country-border: #9c8560;
+  --graticule: rgba(120, 95, 55, 0.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 16px;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(255, 245, 220, 0.6), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(180, 150, 100, 0.15), transparent 55%),
+    var(--paper);
+  position: relative;
+}
+
+/* Subtle paper texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(120, 90, 50, 0.04) 1px, transparent 2px),
+    radial-gradient(circle at 75% 65%, rgba(100, 70, 40, 0.05) 1px, transparent 2px),
+    radial-gradient(circle at 45% 85%, rgba(140, 110, 70, 0.03) 1px, transparent 2px);
+  background-size: 3px 3px, 5px 5px, 4px 4px;
+  mix-blend-mode: multiply;
+}
+
+#map-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+}
+#map.dragging { cursor: grabbing; }
+
+/* HEADER */
+.masthead {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  padding: 22px 32px 16px;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.title-block {
+  pointer-events: auto;
+}
+.eyebrow {
+  font-family: 'IM Fell English SC', 'EB Garamond', serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.main-title {
+  font-family: 'IM Fell English SC', 'EB Garamond', serif;
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--sepia);
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(255,240,210,0.5);
+}
+.subtitle {
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-top: 6px;
+  max-width: 440px;
+}
+
+/* Dataset switcher */
+.dataset-switcher {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.dataset-label {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+.dataset-select {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 14px;
+  color: var(--sepia);
+  background: rgba(241, 232, 212, 0.92);
+  border: 1px solid var(--sepia);
+  padding: 5px 28px 5px 10px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b4423'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  min-width: 220px;
+}
+.dataset-select:focus { outline: 1px solid var(--sepia); }
+
+.dataset-subtitle {
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px dotted var(--land-border);
+  line-height: 1.4;
+  max-width: 360px;
+  min-height: 32px;
+}
+
+/* Legend dots */
+.domain-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin-top: 8px;
+  display: none;
+}
+.domain-legend.visible { display: flex; }
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+}
+.legend-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+.legend-item.dimmed { opacity: 0.35; }
+
+/* Legend / stats */
+.stats-panel {
+  pointer-events: auto;
+  background: rgba(241, 232, 212, 0.85);
+  border: 1px solid var(--land-border);
+  padding: 14px 18px;
+  min-width: 270px;
+  box-shadow: 0 2px 8px rgba(90,70,40,0.12);
+  backdrop-filter: blur(2px);
+}
+.stats-panel h3 {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--land-border);
+  padding-bottom: 6px;
+}
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+  line-height: 1.6;
+  gap: 16px;
+}
+.stat-row .stat-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+.stat-label { color: var(--ink-soft); font-style: italic; }
+.stat-value { color: var(--sepia); font-weight: 600; font-variant-numeric: tabular-nums; }
+.era-name {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 15px;
+  color: var(--sepia);
+  text-align: center;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dotted var(--land-border);
+  letter-spacing: 0.08em;
+}
+
+/* TIMELINE */
+.timeline-container {
+  position: absolute;
+  bottom: 24px;
+  left: 32px;
+  right: 32px;
+  z-index: 10;
+  pointer-events: none;
+}
+.timeline-panel {
+  pointer-events: auto;
+  background: rgba(241, 232, 212, 0.92);
+  border: 1px solid var(--land-border);
+  padding: 16px 24px 18px;
+  box-shadow: 0 4px 20px rgba(60, 40, 20, 0.18), inset 0 0 30px rgba(200, 170, 110, 0.1);
+  backdrop-filter: blur(3px);
+  position: relative;
+}
+/* Ornamental corners */
+.timeline-panel::before,
+.timeline-panel::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 1px solid var(--sepia);
+}
+.timeline-panel::before { top: 4px; left: 4px; border-right: 0; border-bottom: 0; }
+.timeline-panel::after { bottom: 4px; right: 4px; border-left: 0; border-top: 0; }
+
+.year-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.year-number {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 40px;
+  color: var(--sepia);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.year-suffix {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 18px;
+  color: var(--ink-faint);
+  letter-spacing: 0.25em;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.play-btn {
+  background: var(--paper-dark);
+  border: 1px solid var(--sepia);
+  color: var(--sepia);
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.play-btn:hover { background: var(--sepia); color: var(--paper); }
+.play-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+.slider-wrap {
+  flex: 1;
+  position: relative;
+  height: 50px;
+}
+.slider-track {
+  position: absolute;
+  top: 22px;
+  left: 0; right: 0;
+  height: 6px;
+  background: var(--paper-dark);
+  border: 1px solid var(--land-border);
+  border-radius: 0;
+}
+/* Era backgrounds on track */
+.slider-track::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    #c7a878 0%,    /* prehistory */
+    #b89468 18%,   /* bronze */
+    #a88058 38%,   /* classical */
+    #987048 50%,   /* post-classical */
+    #886038 70%,   /* medieval */
+    #785028 85%,   /* early modern */
+    #684020 100%   /* modern */
+  );
+  opacity: 0.4;
+}
+/* Tick marks */
+.ticks {
+  position: absolute;
+  top: 0;
+  left: 0; right: 0;
+  height: 20px;
+  pointer-events: none;
+}
+.tick {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-faint);
+  text-align: center;
+  top: 0;
+}
+.tick::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 4px;
+  background: var(--land-border);
+  margin: 2px auto 0;
+}
+
+input[type="range"].year-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: transparent;
+  margin: 0;
+  outline: none;
+  z-index: 2;
+  cursor: grab;
+}
+input[type="range"].year-slider:active { cursor: grabbing; }
+input[type="range"].year-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 26px;
+  background: var(--paper);
+  border: 2px solid var(--sepia);
+  border-radius: 2px;
+  cursor: grab;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.5);
+  margin-top: -8px;
+}
+input[type="range"].year-slider::-moz-range-thumb {
+  width: 18px;
+  height: 26px;
+  background: var(--paper);
+  border: 2px solid var(--sepia);
+  border-radius: 2px;
+  cursor: grab;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+input[type="range"].year-slider::-webkit-slider-runnable-track {
+  height: 10px;
+  background: transparent;
+}
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.speed-control select {
+  font-family: 'EB Garamond', serif;
+  background: var(--paper);
+  border: 1px solid var(--land-border);
+  color: var(--sepia);
+  padding: 3px 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* ZOOM CONTROLS */
+.zoom-controls {
+  position: absolute;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 10;
+}
+.zoom-btn {
+  width: 38px; height: 38px;
+  background: rgba(241, 232, 212, 0.9);
+  border: 1px solid var(--land-border);
+  color: var(--sepia);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IM Fell English SC', serif;
+  transition: all 0.15s;
+}
+.zoom-btn:hover { background: var(--sepia); color: var(--paper); }
+.zoom-btn svg { width: 14px; height: 14px; fill: currentColor; }
+
+/* TOOLTIP */
+.tooltip {
+  position: absolute;
+  background: var(--paper);
+  border: 1px solid var(--sepia);
+  padding: 8px 12px;
+  pointer-events: none;
+  font-size: 13px;
+  box-shadow: 0 3px 10px rgba(60,40,20,0.25);
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.15s;
+  max-width: 220px;
+}
+.tooltip.visible { opacity: 1; }
+.tooltip-name {
+  font-family: 'IM Fell English SC', serif;
+  color: var(--sepia);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+.tooltip-country {
+  color: var(--ink-soft);
+  font-style: italic;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+.tooltip-year {
+  color: var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding-top: 4px;
+  border-top: 1px dotted var(--land-border);
+}
+
+/* CITY INFO CARD (click) */
+.city-card {
+  position: absolute;
+  left: 32px;
+  bottom: 160px;
+  z-index: 10;
+  background: var(--paper);
+  border: 1px solid var(--sepia);
+  padding: 16px 20px;
+  min-width: 280px;
+  max-width: 340px;
+  box-shadow: 0 6px 24px rgba(60,40,20,0.25);
+  display: none;
+}
+.city-card.visible { display: block; animation: cardIn 0.3s ease-out; }
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.city-card h2 {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 22px;
+  color: var(--sepia);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  margin-bottom: 2px;
+}
+.city-card .card-country {
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.city-card .card-divider {
+  border: 0; border-top: 1px solid var(--land-border);
+  margin: 10px 0;
+}
+.city-card .card-founded {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+  font-style: italic;
+}
+.city-card .card-year {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 20px;
+  color: var(--sepia);
+  letter-spacing: 0.04em;
+}
+.city-card .card-coords {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 10px;
+}
+.city-card .card-close {
+  position: absolute;
+  top: 8px; right: 10px;
+  background: transparent;
+  border: 0;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: 16px;
+  font-family: serif;
+}
+.card-age-bars {
+  display: flex; gap: 3px;
+  margin-top: 8px;
+}
+.age-pip {
+  height: 8px;
+  flex: 1;
+  background: var(--paper-dark);
+  border: 1px solid var(--land-border);
+}
+.age-pip.active { background: var(--sepia); }
+
+/* TWEAKS PANEL */
+.tweaks-panel {
+  position: absolute;
+  right: 80px;
+  top: 90px;
+  background: var(--paper);
+  border: 1px solid var(--sepia);
+  padding: 16px 18px;
+  z-index: 15;
+  box-shadow: 0 4px 16px rgba(60,40,20,0.2);
+  min-width: 240px;
+  display: none;
+}
+.tweaks-panel.visible { display: block; }
+.tweaks-panel h3 {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: var(--sepia);
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--land-border);
+  font-weight: 400;
+}
+.tweak-row {
+  margin-bottom: 12px;
+}
+.tweak-row label {
+  display: block;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-bottom: 4px;
+}
+.tweak-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--sepia);
+}
+.tweak-row input[type="checkbox"] {
+  margin-right: 6px;
+  accent-color: var(--sepia);
+}
+.tweak-row .val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--sepia);
+  float: right;
+}
+
+/* NEW ENTRY TICKER */
+.new-entry-ticker {
+  position: absolute;
+  left: 50%;
+  top: 80px;
+  transform: translateX(-50%);
+  z-index: 12;
+  pointer-events: none;
+  text-align: center;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
+.new-entry-ticker.visible {
+  opacity: 1;
+}
+.ticker-label {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 3px;
+}
+.ticker-name {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 26px;
+  color: var(--sepia);
+  letter-spacing: 0.06em;
+  display: block;
+  text-shadow: 0 0 20px rgba(241,232,212,0.9), 0 1px 0 rgba(255,245,220,0.6);
+  animation: tickerPop 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.ticker-sub {
+  font-family: 'EB Garamond', serif;
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+  display: block;
+  margin-top: 1px;
+}
+@keyframes tickerPop {
+  from { opacity: 0; transform: translateY(6px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  z-index: 100;
+  font-family: 'IM Fell English SC', serif;
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  color: var(--sepia);
+}
+.loading.hidden { display: none; }
+
+/* Compass ornament */
+.compass {
+  position: absolute;
+  right: 40px;
+  bottom: 150px;
+  width: 64px;
+  height: 64px;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 5;
+}
+</style>
+</head>
+<body>
+
+<div class="new-entry-ticker" id="new-entry-ticker">
+  <span class="ticker-label" id="ticker-label">Founded</span>
+  <span class="ticker-name" id="ticker-name"></span>
+  <span class="ticker-sub" id="ticker-sub"></span>
+</div>
+
+<div class="loading" id="loading">Unfurling the map…</div>
+
+<div id="map-wrap">
+  <svg id="map"></svg>
+</div>
+
+<svg class="compass" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="44" fill="none" stroke="#6b4423" stroke-width="0.5"/>
+  <circle cx="50" cy="50" r="38" fill="none" stroke="#6b4423" stroke-width="0.3"/>
+  <g stroke="#6b4423" stroke-width="0.5">
+    <line x1="50" y1="6" x2="50" y2="94"/>
+    <line x1="6" y1="50" x2="94" y2="50"/>
+    <line x1="19" y1="19" x2="81" y2="81"/>
+    <line x1="81" y1="19" x2="19" y2="81"/>
+  </g>
+  <polygon points="50,10 54,50 50,46 46,50" fill="#8b3a2a"/>
+  <polygon points="50,90 54,50 50,54 46,50" fill="#6b4423" opacity="0.6"/>
+  <text x="50" y="16" text-anchor="middle" font-family="IM Fell English SC" font-size="8" fill="#6b4423">N</text>
+  <text x="50" y="90" text-anchor="middle" font-family="IM Fell English SC" font-size="8" fill="#6b4423">S</text>
+  <text x="88" y="53" text-anchor="middle" font-family="IM Fell English SC" font-size="8" fill="#6b4423">E</text>
+  <text x="12" y="53" text-anchor="middle" font-family="IM Fell English SC" font-size="8" fill="#6b4423">W</text>
+</svg>
+
+<div class="masthead">
+  <div class="title-block">
+    <div class="eyebrow">An Atlas of the World</div>
+    <h1 class="main-title">History Flow</h1>
+    <div class="dataset-switcher">
+      <span class="dataset-label">Showing</span>
+      <select class="dataset-select" id="dataset-select">
+        <option value="cities">City Foundations</option>
+        <option value="people">Famous People (Pantheon)</option>
+        <option value="both">Both Layers</option>
+      </select>
+    </div>
+    <div class="dataset-subtitle" id="dataset-subtitle">Cities of the world, plotted by their earliest recorded foundation date.</div>
+    <div class="domain-legend" id="domain-legend">
+      <div class="legend-item" data-domain="ARTS"><div class="legend-dot" style="background:#8b3a2a"></div>Arts</div>
+      <div class="legend-item" data-domain="SCIENCE"><div class="legend-dot" style="background:#2a5f8b"></div>Science</div>
+      <div class="legend-item" data-domain="LEADERSHIP"><div class="legend-dot" style="background:#5a3a8b"></div>Leadership</div>
+      <div class="legend-item" data-domain="SPORTS"><div class="legend-dot" style="background:#2a8b5a"></div>Sports</div>
+      <div class="legend-item" data-domain="RELIGION"><div class="legend-dot" style="background:#8b7a2a"></div>Religion</div>
+      <div class="legend-item" data-domain="HUMANITIES"><div class="legend-dot" style="background:#6b4423"></div>Humanities</div>
+    </div>
+  </div>
+  <div class="stats-panel" id="stats">
+    <h3>Chronicle</h3>
+    <div class="stat-row"><span class="stat-label">Visible now</span><span class="stat-value" id="stat-count">0</span></div>
+    <div class="stat-row"><span class="stat-label">In dataset</span><span class="stat-value" id="stat-total">0</span></div>
+    <div class="stat-row"><span class="stat-label">Most recent</span><span class="stat-value" id="stat-newest">—</span></div>
+    <div class="era-name" id="era-name">Prehistory</div>
+  </div>
+</div>
+
+<div class="zoom-controls">
+  <button class="zoom-btn" id="zoom-in" title="Zoom in">+</button>
+  <button class="zoom-btn" id="zoom-out" title="Zoom out">&minus;</button>
+  <button class="zoom-btn" id="zoom-reset" title="Reset view">
+    <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6H4c0 4.4 3.6 8 8 8s8-3.6 8-8-3.6-8-8-8z"/></svg>
+  </button>
+  <button class="zoom-btn" id="tweaks-toggle" title="Tweaks" style="margin-top:8px;font-family:'IM Fell English SC',serif;font-size:13px;letter-spacing:0.1em;">T</button>
+</div>
+
+<div class="city-card" id="city-card">
+  <button class="card-close" id="card-close">✕</button>
+  <h2 id="card-name">—</h2>
+  <div class="card-country" id="card-country">—</div>
+  <hr class="card-divider">
+  <div class="card-founded" id="card-founded-label">First recorded</div>
+  <div class="card-year" id="card-year">—</div>
+  <div class="card-age-bars" id="card-age-bars"></div>
+  <div class="card-coords" id="card-coords">—</div>
+</div>
+
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-name" id="tt-name"></div>
+  <div class="tooltip-country" id="tt-country"></div>
+  <div class="tooltip-year" id="tt-year"></div>
+</div>
+
+<div class="tweaks-panel" id="tweaks">
+  <h3>Tweaks</h3>
+  <div class="tweak-row">
+    <label>Timeline speed <span class="val" id="val-speed">10 yr/s</span></label>
+    <input type="range" id="tw-speed" min="1" max="100" step="1" value="10">
+  </div>
+  <div class="tweak-row">
+    <label>Dot size <span class="val" id="val-dot">1.0×</span></label>
+    <input type="range" id="tw-dot" min="0.4" max="2.5" step="0.1" value="1.0">
+  </div>
+  <div class="tweak-row">
+    <label>Glow intensity <span class="val" id="val-glow">0.5</span></label>
+    <input type="range" id="tw-glow" min="0" max="1" step="0.05" value="0.5">
+  </div>
+  <div class="tweak-row">
+    <label><input type="checkbox" id="tw-borders" checked> Country borders</label>
+  </div>
+  <div class="tweak-row">
+    <label><input type="checkbox" id="tw-trails" checked> Fade-in trails</label>
+  </div>
+</div>
+
+<script>
+window.__resources = { worldTopo: 'data/world-110m.json' };
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "speed": 71,
+  "dotSize": 0.6,
+  "glow": 0.5,
+  "borders": true,
+  "trails": true
+}/*EDITMODE-END*/;
+</script>
+<script src="app.js"></script>
+
+</body>
+</html>
