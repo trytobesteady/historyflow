@@ -18,14 +18,16 @@
     both:   { min: YEAR_MIN, max: YEAR_MAX }
   };
 
+  const RANGE_BUFFER = 5;
+
   function computeRanges() {
     if (state.cities && state.cities.length) {
       const years = state.cities.map(c => c.year);
-      datasetRanges.cities = { min: Math.min(...years), max: Math.max(...years) };
+      datasetRanges.cities = { min: Math.min(...years) - RANGE_BUFFER, max: Math.max(...years) + RANGE_BUFFER };
     }
     if (state.people && state.people.length) {
       const years = state.people.map(p => p.year);
-      datasetRanges.people = { min: Math.min(...years), max: Math.max(...years) };
+      datasetRanges.people = { min: Math.min(...years) - RANGE_BUFFER, max: Math.max(...years) + RANGE_BUFFER };
     }
     datasetRanges.both = {
       min: Math.min(datasetRanges.cities.min, datasetRanges.people.min),
