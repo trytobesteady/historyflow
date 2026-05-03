@@ -4,7 +4,7 @@
 (() => {
   'use strict';
 
-  const YEAR_MIN = -10000;
+  const YEAR_MIN = -11000;
   const YEAR_MAX = 2000;
   const WORLD_TOPO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
