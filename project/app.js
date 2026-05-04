@@ -286,11 +286,14 @@
 
     // Apply zoom transform to ctx
     const t = state.transform;
+    const k = t.k;
     ctx.save();
     ctx.translate(t.x, t.y);
-    ctx.scale(t.k, t.k);
+    ctx.scale(k, k);
 
     const dotScale = state.tweaks.dotSize;
+    // Cap on-screen dot growth: below k=2.5 dots grow normally, above that they stay fixed
+    const dotK = Math.min(k, 2.5);
 
     // ── CITIES ──
     if ((state.dataset === 'cities' || state.dataset === 'both') && state.cities) {
@@ -298,12 +301,12 @@
         if (c.year > year) continue;
         const pt = projection([c.lon, c.lat]);
         if (!pt) continue;
-        const r = (1.2 + c.importance * 0.9) * dotScale;
+        const baseR = (1.2 + c.importance * 0.9) * dotScale;
+        const r = baseR * dotK / k; // canvas-space radius → screen size capped at dotK
         const age = year - c.year;
         drawCity(pt[0], pt[1], r, age, dotScale);
-        // Register in screen coords
-        const sx = pt[0]*t.k + t.x, sy = pt[1]*t.k + t.y;
-        registerDot(sx, sy, r*t.k, c, 'city');
+        const sx = pt[0]*k + t.x, sy = pt[1]*k + t.y;
+        registerDot(sx, sy, r*k, c, 'city');
       }
     }
 
@@ -316,12 +319,13 @@
         // Size based on HPI — remap from Pantheon range (12-32) to radius 1.5-8
         const hpiMin = (window.PEOPLE_HPI_RANGE && window.PEOPLE_HPI_RANGE[0]) || 12;
         const hpiMax = (window.PEOPLE_HPI_RANGE && window.PEOPLE_HPI_RANGE[1]) || 32;
-        const r = Math.max(1.5, ((p.hpi - hpiMin) / (hpiMax - hpiMin)) * 7 + 1.5) * dotScale;
+        const baseR = Math.max(1.5, ((p.hpi - hpiMin) / (hpiMax - hpiMin)) * 7 + 1.5) * dotScale;
+        const r = baseR * dotK / k;
         const age = year - p.year;
         const color = DOMAIN_COLORS[p.domain] || '#6b4423';
         drawPerson(pt[0], pt[1], r, age, color);
-        const sx = pt[0]*t.k + t.x, sy = pt[1]*t.k + t.y;
-        registerDot(sx, sy, r*t.k, p, 'person');
+        const sx = pt[0]*k + t.x, sy = pt[1]*k + t.y;
+        registerDot(sx, sy, r*k, p, 'person');
       }
     }
 
@@ -334,15 +338,15 @@
   function renderLabels(year, t) {
     if (t.k < 1.8) return;
     const k = t.k;
-    const fontSize = 11;
+    const screenFontSize = Math.min(11 * (k / 1.8), 20);
 
     ctx.save();
     ctx.translate(t.x, t.y);
     ctx.scale(k, k);
-    ctx.font = `${fontSize/k}px "IM Fell English SC", Georgia, serif`;
+    ctx.font = `${screenFontSize/k}px "IM Fell English SC", Georgia, serif`;
     ctx.textBaseline = 'bottom';
 
-    const placed = [], minDist = 40/k;
+    const placed = [], minDist = Math.max(40, screenFontSize * 3) / k;
     let items = [];
 
     if (state.dataset === 'cities' || state.dataset === 'both') {
@@ -579,13 +583,13 @@
     tc.innerHTML = `
       <div class="timeline-panel">
         <div class="year-display">
+          <button class="play-btn" id="play-btn" title="Play/Pause">
+            <svg viewBox="0 0 24 24" id="play-icon"><path d="M8 5v14l11-7z"/></svg>
+          </button>
           <span class="year-number" id="year-number">${Math.abs(state.year)}</span>
           <span class="year-suffix" id="year-suffix">${state.year<0?'BC':'AD'}</span>
         </div>
         <div class="slider-row">
-          <button class="play-btn" id="play-btn" title="Play/Pause">
-            <svg viewBox="0 0 24 24" id="play-icon"><path d="M8 5v14l11-7z"/></svg>
-          </button>
           <div class="slider-wrap" id="slider-wrap">
             <div class="slider-track"></div>
             <div class="ticks" id="ticks"></div>
@@ -653,16 +657,13 @@
   // ── DATASET SWITCHER ───────────────────────────────────
   function setupDatasetSwitcher() {
     const sel = document.getElementById('dataset-select');
-    const subtitleEl = document.getElementById('dataset-subtitle');
     const legendEl = document.getElementById('domain-legend');
 
     sel.value = state.dataset;
-    subtitleEl.textContent = DATASET_META[state.dataset].subtitle;
     legendEl.classList.toggle('visible', state.dataset==='people'||state.dataset==='both');
 
     sel.addEventListener('change', e => {
       state.dataset = e.target.value;
-      subtitleEl.textContent = DATASET_META[state.dataset].subtitle;
       legendEl.classList.toggle('visible', state.dataset==='people'||state.dataset==='both');
       const r = datasetRanges[state.dataset];
       applyRange(r.min, r.max);

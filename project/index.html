@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>History Flow — Cities Through Time</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IM+Fell+English+SC&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -37,7 +38,7 @@ html, body {
   background: var(--paper);
   color: var(--ink);
   font-family: 'EB Garamond', Georgia, serif;
-  font-size: 16px;
+  font-size: 17px;
 }
 
 body {
@@ -92,10 +93,15 @@ body::before {
 }
 .title-block {
   pointer-events: auto;
+  background: rgba(241, 232, 212, 0.85);
+  border: 1px solid var(--land-border);
+  padding: 14px 18px;
+  box-shadow: 0 2px 8px rgba(90,70,40,0.12);
+  backdrop-filter: blur(2px);
 }
 .eyebrow {
   font-family: 'IM Fell English SC', 'EB Garamond', serif;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.25em;
   color: var(--ink-faint);
   text-transform: uppercase;
@@ -103,7 +109,7 @@ body::before {
 }
 .main-title {
   font-family: 'IM Fell English SC', 'EB Garamond', serif;
-  font-size: 34px;
+  font-size: 35px;
   font-weight: 400;
   letter-spacing: 0.08em;
   color: var(--sepia);
@@ -112,7 +118,7 @@ body::before {
 }
 .subtitle {
   font-style: italic;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--ink-soft);
   margin-top: 6px;
   max-width: 440px;
@@ -127,14 +133,14 @@ body::before {
 }
 .dataset-label {
   font-family: 'IM Fell English SC', serif;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.18em;
   color: var(--ink-faint);
   text-transform: uppercase;
 }
 .dataset-select {
   font-family: 'IM Fell English SC', serif;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--sepia);
   background: rgba(241, 232, 212, 0.92);
   border: 1px solid var(--sepia);
@@ -152,7 +158,7 @@ body::before {
 
 .dataset-subtitle {
   font-style: italic;
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--ink-faint);
   margin-top: 6px;
   padding-top: 5px;
@@ -175,7 +181,7 @@ body::before {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--ink-soft);
   cursor: pointer;
   user-select: none;
@@ -200,7 +206,7 @@ body::before {
 }
 .stats-panel h3 {
   font-family: 'IM Fell English SC', serif;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0.2em;
   color: var(--ink-faint);
   font-weight: 400;
@@ -212,7 +218,7 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
   gap: 16px;
 }
@@ -226,7 +232,7 @@ body::before {
 .stat-value { color: var(--sepia); font-weight: 600; font-variant-numeric: tabular-nums; }
 .era-name {
   font-family: 'IM Fell English SC', serif;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--sepia);
   text-align: center;
   margin-top: 10px;
@@ -266,14 +272,14 @@ body::before {
 
 .year-display {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
   gap: 12px;
   margin-bottom: 10px;
 }
 .year-number {
   font-family: 'IM Fell English SC', serif;
-  font-size: 40px;
+  font-size: 41px;
   color: var(--sepia);
   letter-spacing: 0.04em;
   line-height: 1;
@@ -281,7 +287,7 @@ body::before {
 }
 .year-suffix {
   font-family: 'IM Fell English SC', serif;
-  font-size: 18px;
+  font-size: 19px;
   color: var(--ink-faint);
   letter-spacing: 0.25em;
 }
@@ -296,18 +302,17 @@ body::before {
   background: var(--paper-dark);
   border: 1px solid var(--sepia);
   color: var(--sepia);
-  width: 42px; height: 42px;
+  width: 54px; height: 54px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
   transition: all 0.2s;
-  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(90,70,40,0.15);
 }
 .play-btn:hover { background: var(--sepia); color: var(--paper); }
-.play-btn svg { width: 16px; height: 16px; fill: currentColor; }
+.play-btn svg { width: 22px; height: 22px; fill: currentColor; }
 
 .slider-wrap {
   flex: 1;
@@ -351,7 +356,7 @@ body::before {
   position: absolute;
   transform: translateX(-50%);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--ink-faint);
   text-align: center;
   top: 0;
@@ -410,7 +415,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-soft);
   font-style: italic;
 }
@@ -420,7 +425,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
   border: 1px solid var(--land-border);
   color: var(--sepia);
   padding: 3px 6px;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -440,7 +445,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
   background: rgba(241, 232, 212, 0.9);
   border: 1px solid var(--land-border);
   color: var(--sepia);
-  font-size: 18px;
+  font-size: 19px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -451,6 +456,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 .zoom-btn:hover { background: var(--sepia); color: var(--paper); }
 .zoom-btn svg { width: 14px; height: 14px; fill: currentColor; }
 
+
 /* TOOLTIP */
 .tooltip {
   position: absolute;
@@ -458,7 +464,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
   border: 1px solid var(--sepia);
   padding: 8px 12px;
   pointer-events: none;
-  font-size: 13px;
+  font-size: 14px;
   box-shadow: 0 3px 10px rgba(60,40,20,0.25);
   z-index: 20;
   opacity: 0;
@@ -469,20 +475,20 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 .tooltip-name {
   font-family: 'IM Fell English SC', serif;
   color: var(--sepia);
-  font-size: 15px;
+  font-size: 16px;
   letter-spacing: 0.04em;
   margin-bottom: 2px;
 }
 .tooltip-country {
   color: var(--ink-soft);
   font-style: italic;
-  font-size: 12px;
+  font-size: 13px;
   margin-bottom: 4px;
 }
 .tooltip-year {
   color: var(--ink);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
   padding-top: 4px;
   border-top: 1px dotted var(--land-border);
 }
@@ -491,7 +497,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 .city-card {
   position: absolute;
   left: 32px;
-  bottom: 160px;
+  bottom: 190px;
   z-index: 10;
   background: var(--paper);
   border: 1px solid var(--sepia);
@@ -508,7 +514,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 }
 .city-card h2 {
   font-family: 'IM Fell English SC', serif;
-  font-size: 22px;
+  font-size: 23px;
   color: var(--sepia);
   font-weight: 400;
   letter-spacing: 0.06em;
@@ -517,7 +523,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 .city-card .card-country {
   font-style: italic;
   color: var(--ink-soft);
-  font-size: 14px;
+  font-size: 15px;
   margin-bottom: 10px;
 }
 .city-card .card-divider {
@@ -525,20 +531,20 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
   margin: 10px 0;
 }
 .city-card .card-founded {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ink-soft);
   margin-bottom: 4px;
   font-style: italic;
 }
 .city-card .card-year {
   font-family: 'IM Fell English SC', serif;
-  font-size: 20px;
+  font-size: 21px;
   color: var(--sepia);
   letter-spacing: 0.04em;
 }
 .city-card .card-coords {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--ink-faint);
   margin-top: 10px;
 }
@@ -549,7 +555,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
   border: 0;
   color: var(--ink-faint);
   cursor: pointer;
-  font-size: 16px;
+  font-size: 17px;
   font-family: serif;
 }
 .card-age-bars {
@@ -568,7 +574,8 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 .tweaks-panel {
   position: absolute;
   right: 80px;
-  top: 90px;
+  bottom: 220px;
+  top: auto;
   background: var(--paper);
   border: 1px solid var(--sepia);
   padding: 16px 18px;
@@ -580,7 +587,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 .tweaks-panel.visible { display: block; }
 .tweaks-panel h3 {
   font-family: 'IM Fell English SC', serif;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.22em;
   color: var(--sepia);
   margin-bottom: 12px;
@@ -593,7 +600,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 }
 .tweak-row label {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--ink-soft);
   font-style: italic;
   margin-bottom: 4px;
@@ -608,7 +615,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 }
 .tweak-row .val {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--sepia);
   float: right;
 }
@@ -617,7 +624,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 .new-entry-ticker {
   position: absolute;
   left: 50%;
-  top: 80px;
+  top: 50px;
   transform: translateX(-50%);
   z-index: 12;
   pointer-events: none;
@@ -630,29 +637,42 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 }
 .ticker-label {
   font-family: 'IM Fell English SC', serif;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.25em;
   color: var(--ink-faint);
   text-transform: uppercase;
   display: block;
   margin-bottom: 3px;
+  text-shadow:
+    -1px -1px 0 var(--paper), 1px -1px 0 var(--paper),
+    -1px  1px 0 var(--paper), 1px  1px 0 var(--paper),
+    0 0 10px rgba(241,232,212,0.95), 0 0 20px rgba(241,232,212,0.7);
 }
 .ticker-name {
   font-family: 'IM Fell English SC', serif;
-  font-size: 26px;
+  font-size: 27px;
   color: var(--sepia);
   letter-spacing: 0.06em;
   display: block;
-  text-shadow: 0 0 20px rgba(241,232,212,0.9), 0 1px 0 rgba(255,245,220,0.6);
+  text-shadow:
+    -2px -2px 0 var(--paper), 2px -2px 0 var(--paper),
+    -2px  2px 0 var(--paper), 2px  2px 0 var(--paper),
+    -1px  0   0 var(--paper), 1px  0   0 var(--paper),
+     0   -1px 0 var(--paper), 0    1px 0 var(--paper),
+    0 0 16px rgba(241,232,212,1), 0 0 32px rgba(241,232,212,0.8);
   animation: tickerPop 0.4s cubic-bezier(0.22,1,0.36,1);
 }
 .ticker-sub {
   font-family: 'EB Garamond', serif;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ink-soft);
   font-style: italic;
   display: block;
   margin-top: 1px;
+  text-shadow:
+    -1px -1px 0 var(--paper), 1px -1px 0 var(--paper),
+    -1px  1px 0 var(--paper), 1px  1px 0 var(--paper),
+    0 0 10px rgba(241,232,212,0.95), 0 0 20px rgba(241,232,212,0.7);
 }
 @keyframes tickerPop {
   from { opacity: 0; transform: translateY(6px) scale(0.95); }
@@ -667,7 +687,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
   background: var(--paper);
   z-index: 100;
   font-family: 'IM Fell English SC', serif;
-  font-size: 16px;
+  font-size: 17px;
   letter-spacing: 0.2em;
   color: var(--sepia);
 }
@@ -719,7 +739,6 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
 
 <div class="masthead">
   <div class="title-block">
-    <div class="eyebrow">An Atlas of the World</div>
     <h1 class="main-title">History Flow</h1>
     <div class="dataset-switcher">
       <span class="dataset-label">Showing</span>
@@ -729,8 +748,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
         <option value="both">Both Layers</option>
       </select>
     </div>
-    <div class="dataset-subtitle" id="dataset-subtitle">Cities of the world, plotted by their earliest recorded foundation date.</div>
-    <div class="domain-legend" id="domain-legend">
+<div class="domain-legend" id="domain-legend">
       <div class="legend-item" data-domain="ARTS"><div class="legend-dot" style="background:#8b3a2a"></div>Arts</div>
       <div class="legend-item" data-domain="SCIENCE"><div class="legend-dot" style="background:#2a5f8b"></div>Science</div>
       <div class="legend-item" data-domain="LEADERSHIP"><div class="legend-dot" style="background:#5a3a8b"></div>Leadership</div>
@@ -754,7 +772,9 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
   <button class="zoom-btn" id="zoom-reset" title="Reset view">
     <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6H4c0 4.4 3.6 8 8 8s8-3.6 8-8-3.6-8-8-8z"/></svg>
   </button>
-  <button class="zoom-btn" id="tweaks-toggle" title="Tweaks" style="margin-top:8px;font-family:'IM Fell English SC',serif;font-size:13px;letter-spacing:0.1em;">T</button>
+  <button class="zoom-btn" id="tweaks-toggle" title="Tweaks" style="margin-top:8px;">
+    <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a6.97 6.97 0 0 0-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.87a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.47.47 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.37 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.01-1.58zM12 15.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2z"/></svg>
+  </button>
 </div>
 
 <div class="city-card" id="city-card">

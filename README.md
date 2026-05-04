@@ -20,7 +20,7 @@ Open **http://localhost:3000** in your browser.
 
 | Action | How |
 |--------|-----|
-| Play / pause animation | Click the ▶ button or press **Space** |
+| Play / pause animation | Click the ▶ button (left of the year display) or press **Space** |
 | Step through time | **←** / **→** arrow keys (hold **Shift** for ×10 jumps) |
 | Jump to start / end | **Home** / **End** |
 | Pan the map | Click and drag |
@@ -28,7 +28,7 @@ Open **http://localhost:3000** in your browser.
 | Reset zoom | The ↺ button |
 | Inspect a dot | Click it — opens a detail card |
 | Hover a dot | Shows a tooltip |
-| Toggle tweaks panel | The **T** button (dot size, glow, speed, borders) |
+| Toggle tweaks panel | The ⚙ button (dot size, glow, speed, borders) |
 
 ## Datasets
 
@@ -40,6 +40,10 @@ Switch between datasets with the **Showing** dropdown in the top-left:
 - **Both Layers** — cities and people overlaid simultaneously.
 
 Click any domain label in the legend to toggle that category on/off.
+
+## Map rendering
+
+City and people dots cap their on-screen size at 2.5× zoom — beyond that they stay fixed so dense regions remain readable. City name labels appear at 1.8× zoom and scale up with further zoom (capped at 20 px), matching the behaviour of labels on a conventional map.
 
 ## Project layout
 
