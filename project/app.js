@@ -742,9 +742,11 @@
 
   // ── DATA LOADING ──────────────────────────────────────
   function loadCities() {
-    state.cities = (window.CITIES_DATA||[]).map((c,i) => ({
-      id:i, name:c[0], country:c[1], lon:c[2], lat:c[3], year:c[4], importance:c[5]
-    }));
+    state.cities = (window.CITIES_DATA||[])
+      .filter(c => c[4] != null)
+      .map((c,i) => ({
+        id:i, name:c[0], country:c[1], lon:c[2], lat:c[3], year:c[4], importance:c[5]
+      }));
   }
 
   function loadPeople() {
