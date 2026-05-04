@@ -34,7 +34,7 @@ Open **http://localhost:3000** in your browser.
 
 Switch between datasets with the **Showing** dropdown in the top-left:
 
-- **City Foundations** — ~600 historically significant cities, plotted by earliest recorded founding date. Dot size reflects historical importance (1–5 scale).
+- **City Foundations** — 9,020+ cities sourced from Wikidata, plotted by earliest recorded founding date. Dot size reflects historical importance (1–5 scale).
 - **Famous People (Pantheon)** — 3,434 historical figures from the [Pantheon 1.0](https://pantheon.world) dataset (MIT Media Lab, CC BY 4.0), plotted by birthplace. Dot size reflects Historical Popularity Index (HPI). Coloured by domain:
   - Arts · Science · Leadership · Sports · Religion · Humanities
 - **Both Layers** — cities and people overlaid simultaneously.
