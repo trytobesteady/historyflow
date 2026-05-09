@@ -68,6 +68,50 @@
     slider.min = min; slider.max = max;
     rebuildTicks(min, max);
     setYear(Math.max(min, Math.min(max, state.year)));
+    drawDensityCanvas();
+  }
+
+  function drawDensityCanvas() {
+    const canvas = document.getElementById('density-canvas');
+    if (!canvas) return;
+    const track = canvas.parentElement;
+    const W = track ? track.clientWidth : canvas.offsetWidth;
+    const H = track ? track.clientHeight : canvas.offsetHeight;
+    if (!W || !H) return;
+    canvas.width = W;
+    canvas.height = H;
+
+    const years = [];
+    if (state.dataset === 'cities' || state.dataset === 'both') {
+      (state.cities || []).forEach(c => { if (c.year >= rangeMin && c.year <= rangeMax) years.push(c.year); });
+    }
+    if (state.dataset === 'people' || state.dataset === 'both') {
+      (state.people || []).forEach(p => { if (p.year >= rangeMin && p.year <= rangeMax) years.push(p.year); });
+    }
+
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, W, H);
+    if (!years.length) return;
+
+    const span = rangeMax - rangeMin;
+    const hit = new Uint8Array(W);
+    years.forEach(y => {
+      const col = Math.round((y - rangeMin) / span * (W - 1));
+      hit[Math.max(0, Math.min(W - 1, col))] = 1;
+    });
+
+    const imgData = ctx.createImageData(W, H);
+    for (let x = 0; x < W; x++) {
+      if (!hit[x]) continue;
+      for (let y = 0; y < H; y++) {
+        const i = (y * W + x) * 4;
+        imgData.data[i]     = 107;
+        imgData.data[i + 1] = 68;
+        imgData.data[i + 2] = 35;
+        imgData.data[i + 3] = 210;
+      }
+    }
+    ctx.putImageData(imgData, 0, 0);
   }
 
   const DATASET_META = {
@@ -592,7 +636,7 @@
         </div>
         <div class="slider-row">
           <div class="slider-wrap" id="slider-wrap">
-            <div class="slider-track"></div>
+            <div class="slider-track"><canvas id="density-canvas"></canvas></div>
             <div class="ticks" id="ticks"></div>
           </div>
           <div class="speed-control">
@@ -798,7 +842,7 @@
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => { setupSizes(); renderBase(); render(state.year); }, 150);
+    resizeTimer = setTimeout(() => { setupSizes(); renderBase(); render(state.year); drawDensityCanvas(); }, 150);
   });
 
   document.addEventListener('keydown', e => {

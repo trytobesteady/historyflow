@@ -334,9 +334,9 @@ body::before {
 }
 .slider-track {
   position: absolute;
-  top: 30px;
+  top: 27px;
   left: 0; right: 0;
-  height: 6px;
+  height: 12px;
   background: var(--paper-dark);
   border: 1px solid var(--land-border);
   border-radius: 0;
@@ -356,6 +356,13 @@ body::before {
     #684020 100%   /* modern */
   );
   opacity: 0.4;
+}
+#density-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  display: block;
 }
 /* Tick marks */
 .ticks {
@@ -773,7 +780,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
     height: 50px;
   }
   .slider-track {
-    top: 22px;
+    top: 20px;
   }
   .ticks {
     height: 20px;
