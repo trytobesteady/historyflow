@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="5" fill="#f1e8d4"/>
+  <!-- top sand -->
+  <polygon points="8,7.5 24,7.5 16,16" fill="#8b3a2a" opacity="0.9"/>
+  <!-- bottom accumulated sand -->
+  <polygon points="10.5,24.5 21.5,24.5 16,19" fill="#2c2416" opacity="0.75"/>
+  <!-- top bar -->
+  <rect x="7" y="5" width="18" height="2.5" rx="1" fill="#2c2416"/>
+  <!-- bottom bar -->
+  <rect x="7" y="24.5" width="18" height="2.5" rx="1" fill="#2c2416"/>
+  <!-- left contour -->
+  <polyline points="8,7.5 16,16.5 10.5,24.5" fill="none" stroke="#2c2416" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- right contour -->
+  <polyline points="24,7.5 16,16.5 21.5,24.5" fill="none" stroke="#2c2416" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- sand drip -->
+  <circle cx="16" cy="17.5" r="1.1" fill="#8b3a2a"/>
+</svg>
