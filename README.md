@@ -2,7 +2,7 @@
 
 An interactive historical atlas that animates 12,000 years of human civilization — city foundations and famous people plotted on a world map, revealed as you move through time.
 
-![History Flow screenshot placeholder](project/01-europe.jpg)
+![History Flow — city foundations at 1800 AD](project/screenshot.png)
 
 ## Running locally
 
