@@ -43,6 +43,7 @@
     else if (span > 2000) step = 500;
     else if (span > 1000) step = 200;
     else step = 100;
+    if (window.innerWidth < 600) step *= 2;
     const ticks = [];
     const start = Math.ceil(min / step) * step;
     for (let t = start; t <= max; t += step) ticks.push(t);

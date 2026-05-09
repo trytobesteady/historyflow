@@ -704,6 +704,97 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
   pointer-events: none;
   z-index: 5;
 }
+
+/* ── MOBILE ── */
+@media (max-width: 600px) {
+  .masthead {
+    padding: 12px 14px 10px;
+    gap: 12px;
+  }
+  .title-block {
+    padding: 10px 14px;
+  }
+  .main-title {
+    font-size: 24px;
+  }
+  .stats-panel {
+    display: none;
+  }
+  .dataset-select {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .timeline-container {
+    left: 12px;
+    right: 12px;
+    bottom: 14px;
+  }
+  .timeline-panel {
+    padding: 12px 16px 14px;
+  }
+  .year-number {
+    font-size: 28px;
+  }
+  .year-suffix {
+    font-size: 15px;
+  }
+  .play-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .play-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  .speed-control {
+    display: none;
+  }
+  .year-display {
+    margin-bottom: 4px;
+  }
+  .slider-wrap {
+    height: 50px;
+  }
+  .slider-track {
+    top: 22px;
+  }
+  .ticks {
+    height: 20px;
+  }
+  input[type="range"].year-slider {
+    top: 20px;
+  }
+
+  .zoom-controls {
+    right: 14px;
+  }
+  .zoom-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .compass {
+    display: none;
+  }
+
+  .new-entry-ticker {
+    top: 116px;
+  }
+
+  .city-card {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-width: unset;
+    max-width: unset;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-radius: 0;
+    z-index: 15;
+  }
+}
 </style>
 </head>
 <body>
