@@ -767,6 +767,13 @@
     state.countries = topojson.mesh(topo, topo.objects.countries, (a,b) => a!==b);
   }
 
+  // ── CHRONICLE TOGGLE ──────────────────────────────────
+  function setupChronicleToggle() {
+    const panel = document.getElementById('stats');
+    document.getElementById('chronicle-toggle').addEventListener('click', () => panel.classList.toggle('collapsed'));
+    if (window.innerWidth < 600) panel.classList.add('collapsed');
+  }
+
   // ── INIT ──────────────────────────────────────────────
   async function init() {
     setupSizes();
@@ -775,6 +782,7 @@
     applyZoom();
     buildTimeline();
     setupTweaks();
+    setupChronicleToggle();
     setupDatasetSwitcher();
     loadCities();
     loadPeople();

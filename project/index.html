@@ -211,7 +211,22 @@ body::before {
   margin-bottom: 8px;
   border-bottom: 1px solid var(--land-border);
   padding-bottom: 6px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+.panel-arrow {
+  font-size: 10px;
+  margin-left: 8px;
+  transition: transform 0.2s;
+  letter-spacing: 0;
+}
+.stats-panel.collapsed .panel-arrow { transform: rotate(-90deg); }
+.stats-panel.collapsed .stat-row,
+.stats-panel.collapsed .era-name { display: none; }
+.stats-panel.collapsed h3 { margin-bottom: 0; border-bottom: 0; padding-bottom: 0; }
 .stat-row {
   display: flex;
   justify-content: space-between;
@@ -716,7 +731,10 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
     font-size: 24px;
   }
   .stats-panel {
-    display: none;
+    position: absolute;
+    top: 106px;
+    right: 14px;
+    min-width: 200px;
   }
   .dataset-select {
     min-width: 0;
@@ -847,7 +865,7 @@ input[type="range"].year-slider::-webkit-slider-runnable-track {
     </div>
   </div>
   <div class="stats-panel" id="stats">
-    <h3>Chronicle</h3>
+    <h3 id="chronicle-toggle">Chronicle <span class="panel-arrow">▾</span></h3>
     <div class="stat-row"><span class="stat-label">Visible now</span><span class="stat-value" id="stat-count">0</span></div>
     <div class="stat-row"><span class="stat-label">In dataset</span><span class="stat-value" id="stat-total">0</span></div>
     <div class="stat-row"><span class="stat-label">Most recent</span><span class="stat-value" id="stat-newest">—</span></div>
